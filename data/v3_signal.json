@@ -55245,15 +55245,15 @@
   },
   {
     "date": "2026-06-30",
-    "px": 3988.5,
-    "ma200": 4451.86,
-    "rgold": 0.8959,
-    "rsi": 32.52,
-    "state": "강력매수",
-    "bull_div": true,
+    "px": 3995.4,
+    "ma200": 4451.89,
+    "rgold": 0.8975,
+    "rsi": 32.79,
+    "state": "눌림 관찰",
+    "bull_div": false,
     "bear_div": false,
     "scale_buy": false,
-    "strong_buy": true,
+    "strong_buy": false,
     "caution": false,
     "blowoff": false
   }
