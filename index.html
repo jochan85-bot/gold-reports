@@ -238,7 +238,7 @@ function renderRatioRecent(rows) {
 
 function renderFullHistory(sig) {
   const x    = sig.map(r => r.date);
-  const px   = sig.map(r => r.px);
+  const px   = sig.map(r => r.px_usd);
   const ma   = sig.map(r => r.ma200);
   const ma20 = sig.map(r => r.ma20);
   const rg   = sig.map(r => r.rgold != null ? (r.rgold - 1) * 100 : null);
@@ -251,11 +251,11 @@ function renderFullHistory(sig) {
     { x, y: px, name: "XAU/USD", line: { color: "#eab308", width: 1.5 }, mode: "lines" },
     { x, y: ma, name: "200일선", line: { color: "#8b97a7", width: 0.8, dash: "dot" }, mode: "lines" },
     { x, y: ma20, name: "20일선", line: { color: "#38bdf8", width: 0.8, dash: "dash" }, mode: "lines" },
-    { x: buyDays.map(r => r.date), y: buyDays.map(r => r.px),
+    { x: buyDays.map(r => r.date), y: buyDays.map(r => r.px_usd),
       name: "매수▲", mode: "markers",
       marker: { symbol: "triangle-up", size: 12, color: "#22c55e", line: { color: "#0b0f17", width: 1 } },
     },
-    { x: sellDays.map(r => r.date), y: sellDays.map(r => r.px),
+    { x: sellDays.map(r => r.date), y: sellDays.map(r => r.px_usd),
       name: "매도▼", mode: "markers",
       marker: { symbol: "triangle-down", size: 12, color: "#ef4444", line: { color: "#0b0f17", width: 1 } },
     },
