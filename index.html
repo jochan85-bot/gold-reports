@@ -50,7 +50,7 @@
     font-weight: 500;
   }
   .pill.state-강력매수    { background: rgba(34,197,94,.25);  color: #4ade80; border-color: rgba(34,197,94,.5); }
-  .pill.state-분할매수    { background: rgba(34,197,94,.25);  color: #4ade80; border-color: rgba(34,197,94,.5); }
+  .pill.state-분할매수    { background: rgba(34,197,94,.15);  color: #86efac; border-color: rgba(34,197,94,.3); }
   .pill.state-눌림관찰    { background: rgba(139,151,167,.15); color: var(--muted); }
   .pill.state-관망        { background: rgba(139,151,167,.15); color: var(--muted); }
   .pill.state-froth       { background: rgba(245,158,11,.15); color: #fbbf24; border-color: rgba(245,158,11,.4); }
@@ -80,7 +80,7 @@
   td.right, th.right { text-align: right; font-variant-numeric: tabular-nums; }
   .state-cell { font-weight: 600; }
   .state-강력매수 { color: #4ade80; }
-  .state-분할매수 { color: #4ade80; }
+  .state-분할매수 { color: #86efac; }
   .state-눌림관찰 { color: var(--muted); }
   .state-관망 { color: var(--muted); }
   .state-froth { color: #fbbf24; }
@@ -122,7 +122,7 @@
       <div id="priceChartFull" style="margin-bottom:-4px;"></div>
       <div id="ratioChartFull"></div>
       <div class="chart-note">
-        📌 rGold 기준선: 매수 <span style="color:#22c55e">-3% / -7% (더 저평가)</span> ·
+        📌 rGold 기준선: 매수 <span style="color:#86efac">-3% (분할매수)</span> / <span style="color:#22c55e">-7% (강력매수)</span> ·
         매도 <span style="color:#f59e0b">+18% / +30%</span> ·
         BLOWOFF <span style="color:#ef4444">+35%</span>
       </div>
@@ -151,23 +151,23 @@
 <script>
 const STATE_COLOR = {
   '강력매수':    '#22c55e',
-  '분할매수':    '#22c55e',
+  '분할매수':    '#86efac',
   '눌림 관찰':   '#8b97a7',
   '관망':        '#8b97a7',
   'froth 경보': '#f59e0b',
   'BLOWOFF':    '#ef4444',
 };
 const STATE_LABEL = {
-  '강력매수':    '🟢 매수신호',
-  '분할매수':    '🟢 매수신호',
+  '강력매수':    '🟢 강력매수',
+  '분할매수':    '🟩 분할매수',
   '눌림 관찰':   '👀 눌림 관찰',
   '관망':        '⚪ 관망',
   'froth 경보': '🟠 froth 경보',
   'BLOWOFF':    '🔴 BLOWOFF',
 };
 const STATE_KEY = {
-  '강력매수':    '매수신호',
-  '분할매수':    '매수신호',
+  '강력매수':    '강력매수',
+  '분할매수':    '분할매수',
   '눌림 관찰':   '눌림관찰',
   '관망':        '관망',
   'froth 경보': 'froth',
@@ -217,11 +217,14 @@ function renderStatus(latest) {
   `;
 }
 
-// ── 매수/매도 마커 (삼각형 up/down) ─────────────────────────
-function buildMarkers(rows, priceKey, yGetter) {
-  const buys  = rows.filter(r => r.scale_buy || r.strong_buy);
-  const sells = rows.filter(r => r.caution || r.blowoff);
-  return { buys, sells };
+// ── 매수/매도 마커 (신호 종류별 구분) ──────────────────────
+function buildMarkers(rows) {
+  const strongBuys = rows.filter(r => r.strong_buy);          // 강력매수
+  const scaleBuys  = rows.filter(r => r.scale_buy);           // 분할매수
+  const watchOnly  = rows.filter(r => r.state === '눌림 관찰'); // 눌림 관찰
+  const blowoffs   = rows.filter(r => r.blowoff);             // BLOWOFF
+  const cautions   = rows.filter(r => r.caution);             // froth 경보
+  return { strongBuys, scaleBuys, watchOnly, blowoffs, cautions };
 }
 
 // ── 최근 가격 차트 (history.json) ────────────────────────────
@@ -229,20 +232,30 @@ function renderPriceChart(rows) {
   const x   = rows.map(r => r.date);
   const px  = rows.map(r => r.px_usd);
   const ma  = rows.map(r => r.ma200);
-  const { buys, sells } = buildMarkers(rows);
+  const { strongBuys, scaleBuys, watchOnly, blowoffs, cautions } = buildMarkers(rows);
 
   const traces = [
     { x, y: px, name: "XAU/USD", line: { color: "#eab308", width: 2 }, mode: "lines" },
     { x, y: ma, name: "200일선", line: { color: "#8b97a7", width: 1, dash: "dot" }, mode: "lines" },
-    { x: buys.map(r => r.date), y: buys.map(r => r.px_usd),
-      name: "매수 신호", mode: "markers",
-      marker: { symbol: "triangle-up", size: 12, color: "#22c55e", line: { color: "#0b0f17", width: 1 } },
-      hovertemplate: "%{x}<br>매수 · %{y:$,.0f}<extra></extra>",
+    { x: scaleBuys.map(r => r.date), y: scaleBuys.map(r => r.px_usd),
+      name: "분할매수", mode: "markers",
+      marker: { symbol: "triangle-up", size: 10, color: "#86efac", line: { color: "#0b0f17", width: 1 } },
+      hovertemplate: "%{x}<br>분할매수 · $%{y:,.0f}<extra></extra>",
     },
-    { x: sells.map(r => r.date), y: sells.map(r => r.px_usd),
-      name: "매도 신호", mode: "markers",
-      marker: { symbol: "triangle-down", size: 12, color: "#ef4444", line: { color: "#0b0f17", width: 1 } },
-      hovertemplate: "%{x}<br>매도 · %{y:$,.0f}<extra></extra>",
+    { x: strongBuys.map(r => r.date), y: strongBuys.map(r => r.px_usd),
+      name: "강력매수", mode: "markers",
+      marker: { symbol: "triangle-up", size: 14, color: "#22c55e", line: { color: "#0b0f17", width: 1 } },
+      hovertemplate: "%{x}<br>강력매수 · $%{y:,.0f}<extra></extra>",
+    },
+    { x: cautions.map(r => r.date), y: cautions.map(r => r.px_usd),
+      name: "froth 경보", mode: "markers",
+      marker: { symbol: "triangle-down", size: 10, color: "#f59e0b", line: { color: "#0b0f17", width: 1 } },
+      hovertemplate: "%{x}<br>froth 경보 · $%{y:,.0f}<extra></extra>",
+    },
+    { x: blowoffs.map(r => r.date), y: blowoffs.map(r => r.px_usd),
+      name: "BLOWOFF", mode: "markers",
+      marker: { symbol: "triangle-down", size: 14, color: "#ef4444", line: { color: "#0b0f17", width: 1 } },
+      hovertemplate: "%{x}<br>BLOWOFF · $%{y:,.0f}<extra></extra>",
     },
   ];
   const layout = Object.assign({}, PLOTLY_LAYOUT_BASE, {
@@ -284,20 +297,30 @@ function renderFullHistory(sig) {
   const rg = sig.map(r => r.rgold != null ? (r.rgold - 1) * 100 : null);
 
   // 매수/매도 첫 발화일만 마커로 (연속된 날짜는 grouping)
-  const buyDays  = _episodeStarts(sig, r => r.scale_buy || r.strong_buy);
-  const sellDays = _episodeStarts(sig, r => r.caution || r.blowoff);
+  const scaleBuyDays  = _episodeStarts(sig, r => r.scale_buy && !r.strong_buy);
+  const strongBuyDays  = _episodeStarts(sig, r => r.strong_buy);
+  const cautionDays    = _episodeStarts(sig, r => r.caution);
+  const blowoffDays    = _episodeStarts(sig, r => r.blowoff);
 
   // 가격 차트
   const priceTraces = [
     { x, y: px, name: "XAU/USD", line: { color: "#eab308", width: 1.5 }, mode: "lines" },
     { x, y: ma, name: "200일선", line: { color: "#8b97a7", width: 0.8, dash: "dot" }, mode: "lines" },
-    { x: buyDays.map(r => r.date), y: buyDays.map(r => r.px),
-      name: "매수▲", mode: "markers",
-      marker: { symbol: "triangle-up", size: 10, color: "#22c55e", line: { color: "#0b0f17", width: 1 } },
+    { x: scaleBuyDays.map(r => r.date), y: scaleBuyDays.map(r => r.px),
+      name: "분할매수▲", mode: "markers",
+      marker: { symbol: "triangle-up", size: 9, color: "#86efac", line: { color: "#0b0f17", width: 1 } },
     },
-    { x: sellDays.map(r => r.date), y: sellDays.map(r => r.px),
-      name: "매도▼", mode: "markers",
-      marker: { symbol: "triangle-down", size: 10, color: "#ef4444", line: { color: "#0b0f17", width: 1 } },
+    { x: strongBuyDays.map(r => r.date), y: strongBuyDays.map(r => r.px),
+      name: "강력매수▲", mode: "markers",
+      marker: { symbol: "triangle-up", size: 12, color: "#22c55e", line: { color: "#0b0f17", width: 1 } },
+    },
+    { x: cautionDays.map(r => r.date), y: cautionDays.map(r => r.px),
+      name: "froth 경보▼", mode: "markers",
+      marker: { symbol: "triangle-down", size: 9, color: "#f59e0b", line: { color: "#0b0f17", width: 1 } },
+    },
+    { x: blowoffDays.map(r => r.date), y: blowoffDays.map(r => r.px),
+      name: "BLOWOFF▼", mode: "markers",
+      marker: { symbol: "triangle-down", size: 12, color: "#ef4444", line: { color: "#0b0f17", width: 1 } },
     },
   ];
   const priceLayout = Object.assign({}, PLOTLY_LAYOUT_BASE, {
