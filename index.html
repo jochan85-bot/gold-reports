@@ -13,7 +13,6 @@
     --text: #e6edf3;
     --muted: #8b97a7;
     --green: #22c55e;
-    --lightgreen: #86efac;
     --red: #ef4444;
     --amber: #f59e0b;
     --blue: #3b82f6;
@@ -49,12 +48,9 @@
     background: var(--panel); border: 1px solid var(--border);
     font-weight: 500;
   }
-  .pill.state-강력매수    { background: rgba(34,197,94,.25);  color: #4ade80; border-color: rgba(34,197,94,.5); }
-  .pill.state-분할매수    { background: rgba(34,197,94,.15);  color: #86efac; border-color: rgba(34,197,94,.3); }
-  .pill.state-눌림관찰    { background: rgba(139,151,167,.15); color: var(--muted); }
-  .pill.state-관망        { background: rgba(139,151,167,.15); color: var(--muted); }
-  .pill.state-froth       { background: rgba(245,158,11,.15); color: #fbbf24; border-color: rgba(245,158,11,.4); }
-  .pill.state-BLOWOFF     { background: rgba(239,68,68,.18);  color: #fca5a5; border-color: rgba(239,68,68,.5); }
+  .pill.state-buy   { background: rgba(34,197,94,.22);  color: #4ade80; border-color: rgba(34,197,94,.5); }
+  .pill.state-sell  { background: rgba(239,68,68,.22);  color: #fca5a5; border-color: rgba(239,68,68,.5); }
+  .pill.state-hold  { background: rgba(139,151,167,.15); color: var(--muted); }
   .muted { color: var(--muted); }
   main { padding: 12px; max-width: 1400px; margin: 0 auto; }
   .card {
@@ -79,12 +75,9 @@
   th { color: var(--muted); font-weight: 500; font-size: 12px; text-transform: uppercase; letter-spacing: .04em; }
   td.right, th.right { text-align: right; font-variant-numeric: tabular-nums; }
   .state-cell { font-weight: 600; }
-  .state-강력매수 { color: #4ade80; }
-  .state-분할매수 { color: #86efac; }
-  .state-눌림관찰 { color: var(--muted); }
-  .state-관망 { color: var(--muted); }
-  .state-froth { color: #fbbf24; }
-  .state-BLOWOFF { color: #fca5a5; }
+  .state-buy  { color: #4ade80; }
+  .state-sell { color: #fca5a5; }
+  .state-hold { color: var(--muted); }
   .empty { color: var(--muted); padding: 24px; text-align: center; }
   footer { color: var(--muted); font-size: 12px; padding: 16px; text-align: center; }
   footer a { color: var(--blue); text-decoration: none; }
@@ -94,7 +87,7 @@
 <body>
   <header>
     <div class="header-top">
-      <h1>🪙 Gold Signal · XAU/USD <small>rGold + RSI 다이버전스 · v3</small></h1>
+      <h1>🪙 Gold Signal · XAU/USD <small>rGold + 강세 RSI 다이버전스 · 미니멀</small></h1>
     </div>
     <div class="header-status">
       <div class="status" id="statusBar"><span class="muted">데이터 로드 중…</span></div>
@@ -102,39 +95,32 @@
   </header>
 
   <main>
-    <!-- 1. 최근 가격 차트 (history.json) -->
     <div class="card">
       <h2>가격 · 신호 이벤트 <span class="muted" style="font-weight:400;font-size:12px;">— 최근 라이브 스냅샷</span></h2>
       <div id="priceChart"></div>
     </div>
 
-    <!-- 1-1. 가격 차트 연동 rGold/RSI -->
     <div class="card" style="margin-top:-8px; border-top:none; border-radius:0 0 10px 10px;">
       <h2 style="color:var(--muted);font-size:12px;font-weight:500;">rGold · RSI <span style="font-weight:400;">— 가격 차트 연동</span></h2>
       <div id="ratioChartRecent"></div>
     </div>
 
-    <!-- 2. 전체 히스토리 (v3_signal.json) -->
     <div class="card">
-      <h2>v3 시그널 전체 역사 (2010~) <span class="muted" style="font-weight:400;font-size:12px;">
+      <h2>전체 역사 (2010~) <span class="muted" style="font-weight:400;font-size:12px;">
         — 가격 · rGold(=px/ma200) · 매수▲ / 매도▼
       </span></h2>
       <div id="priceChartFull" style="margin-bottom:-4px;"></div>
       <div id="ratioChartFull"></div>
       <div class="chart-note">
-        📌 rGold 기준선: 매수 <span style="color:#86efac">-3% (분할매수)</span> / <span style="color:#22c55e">-7% (강력매수)</span> ·
-        매도 <span style="color:#f59e0b">+18% / +30%</span> ·
-        BLOWOFF <span style="color:#ef4444">+35%</span>
+        📌 rGold 기준선: 매수 <span style="color:#4ade80">-3%</span> · 매도 <span style="color:#f87171">+33%</span>
       </div>
     </div>
 
-    <!-- 3. 시그널 로그 -->
     <div class="card">
       <h2>시그널 로그 <span class="muted" style="font-weight:400; font-size:12px;">— 신호 변경 이벤트</span></h2>
       <div id="signalLog" class="table-wrap"></div>
     </div>
 
-    <!-- 4. 일일 스냅샷 -->
     <div class="card">
       <h2>일일 스냅샷 <span class="muted" style="font-weight:400; font-size:12px;">— 최근 60일</span></h2>
       <div id="dailyTable" class="table-wrap"></div>
@@ -149,30 +135,9 @@
   </footer>
 
 <script>
-const STATE_COLOR = {
-  '강력매수':    '#22c55e',
-  '분할매수':    '#86efac',
-  '눌림 관찰':   '#8b97a7',
-  '관망':        '#8b97a7',
-  'froth 경보': '#f59e0b',
-  'BLOWOFF':    '#ef4444',
-};
-const STATE_LABEL = {
-  '강력매수':    '🟢 강력매수',
-  '분할매수':    '🟩 분할매수',
-  '눌림 관찰':   '👀 눌림 관찰',
-  '관망':        '⚪ 관망',
-  'froth 경보': '🟠 froth 경보',
-  'BLOWOFF':    '🔴 BLOWOFF',
-};
-const STATE_KEY = {
-  '강력매수':    '강력매수',
-  '분할매수':    '분할매수',
-  '눌림 관찰':   '눌림관찰',
-  '관망':        '관망',
-  'froth 경보': 'froth',
-  'BLOWOFF':    'BLOWOFF',
-};
+const STATE_COLOR = { '매수': '#22c55e', '매도': '#ef4444', '관망': '#8b97a7' };
+const STATE_LABEL = { '매수': '🟢 매수',   '매도': '🔴 매도',   '관망': '⚪ 관망' };
+const STATE_KEY   = { '매수': 'buy',       '매도': 'sell',      '관망': 'hold' };
 
 const PLOTLY_LAYOUT_BASE = {
   paper_bgcolor: "#131a26",
@@ -190,19 +155,17 @@ const PLOTLY_CONFIG = { responsive: true, displayModeBar: false, scrollZoom: fal
 function fmtUSD(n)      { return n == null ? "-" : "$" + Number(n).toLocaleString('en-US', { maximumFractionDigits: 0 }); }
 function fmtPct(n, d=1) { return n == null ? "-" : (n >= 0 ? "+" : "") + Number(n).toFixed(d) + "%"; }
 
-// ── 상태바 ─────────────────────────────────────────────────
 function renderStatus(latest) {
   const el = document.getElementById("statusBar");
   if (!latest) { el.innerHTML = '<span class="muted">데이터 없음</span>'; return; }
   const state = latest.state || '관망';
-  const key = STATE_KEY[state] || 'HOLD';
+  const key = STATE_KEY[state] || 'hold';
   const label = STATE_LABEL[state] || state;
   const rg = latest.rgold != null ? ((latest.rgold - 1) * 100) : null;
   const rgColor = rg == null ? "#e6edf3"
-    : (rg <= -7 ? "#22c55e" : (rg <= -3 ? "#86efac" : (rg >= 35 ? "#ef4444" : (rg >= 18 ? "#f59e0b" : "#e6edf3"))));
+    : (rg <= -3 ? "#4ade80" : (rg >= 33 ? "#ef4444" : "#e6edf3"));
   const rsi = latest.rsi;
   const bullTag = latest.bull_div ? '<span style="color:#22c55e">▲강세div</span>' : '';
-  const bearTag = latest.bear_div ? '<span style="color:#ef4444">▼약세div</span>' : '';
   const changedTag = latest.state_changed
     ? `<span style="color:#a855f7">★ ${latest.state_since} 시작 (1일째)</span>`
     : `<span class="muted">📅 ${latest.state_since || '-'} 부터 (${latest.state_days || 1}일째)</span>`;
@@ -212,50 +175,35 @@ function renderStatus(latest) {
     <span>XAU/USD <strong>${fmtUSD(latest.px_usd)}</strong></span>
     <span>200일선 <strong style="color:${rgColor}">${fmtPct(rg)}</strong></span>
     <span>RSI <strong>${rsi != null ? rsi.toFixed(0) : '-'}</strong></span>
-    ${bullTag} ${bearTag} ${changedTag}
+    ${bullTag} ${changedTag}
     <span class="muted">· ${latest.date || ''}</span>
   `;
 }
 
-// ── 매수/매도 마커 (신호 종류별 구분) ──────────────────────
 function buildMarkers(rows) {
-  const strongBuys = rows.filter(r => r.strong_buy);          // 강력매수
-  const scaleBuys  = rows.filter(r => r.scale_buy);           // 분할매수
-  const watchOnly  = rows.filter(r => r.state === '눌림 관찰'); // 눌림 관찰
-  const blowoffs   = rows.filter(r => r.blowoff);             // BLOWOFF
-  const cautions   = rows.filter(r => r.caution);             // froth 경보
-  return { strongBuys, scaleBuys, watchOnly, blowoffs, cautions };
+  const buys  = rows.filter(r => r.buy);
+  const sells = rows.filter(r => r.sell);
+  return { buys, sells };
 }
 
-// ── 최근 가격 차트 (history.json) ────────────────────────────
 function renderPriceChart(rows) {
   const x   = rows.map(r => r.date);
   const px  = rows.map(r => r.px_usd);
   const ma  = rows.map(r => r.ma200);
-  const { strongBuys, scaleBuys, watchOnly, blowoffs, cautions } = buildMarkers(rows);
+  const { buys, sells } = buildMarkers(rows);
 
   const traces = [
     { x, y: px, name: "XAU/USD", line: { color: "#eab308", width: 2 }, mode: "lines" },
     { x, y: ma, name: "200일선", line: { color: "#8b97a7", width: 1, dash: "dot" }, mode: "lines" },
-    { x: scaleBuys.map(r => r.date), y: scaleBuys.map(r => r.px_usd),
-      name: "분할매수", mode: "markers",
-      marker: { symbol: "triangle-up", size: 10, color: "#86efac", line: { color: "#0b0f17", width: 1 } },
-      hovertemplate: "%{x}<br>분할매수 · $%{y:,.0f}<extra></extra>",
+    { x: buys.map(r => r.date), y: buys.map(r => r.px_usd),
+      name: "매수", mode: "markers",
+      marker: { symbol: "triangle-up", size: 12, color: "#22c55e", line: { color: "#0b0f17", width: 1 } },
+      hovertemplate: "%{x}<br>매수 · $%{y:,.0f}<extra></extra>",
     },
-    { x: strongBuys.map(r => r.date), y: strongBuys.map(r => r.px_usd),
-      name: "강력매수", mode: "markers",
-      marker: { symbol: "triangle-up", size: 14, color: "#22c55e", line: { color: "#0b0f17", width: 1 } },
-      hovertemplate: "%{x}<br>강력매수 · $%{y:,.0f}<extra></extra>",
-    },
-    { x: cautions.map(r => r.date), y: cautions.map(r => r.px_usd),
-      name: "froth 경보", mode: "markers",
-      marker: { symbol: "triangle-down", size: 10, color: "#f59e0b", line: { color: "#0b0f17", width: 1 } },
-      hovertemplate: "%{x}<br>froth 경보 · $%{y:,.0f}<extra></extra>",
-    },
-    { x: blowoffs.map(r => r.date), y: blowoffs.map(r => r.px_usd),
-      name: "BLOWOFF", mode: "markers",
-      marker: { symbol: "triangle-down", size: 14, color: "#ef4444", line: { color: "#0b0f17", width: 1 } },
-      hovertemplate: "%{x}<br>BLOWOFF · $%{y:,.0f}<extra></extra>",
+    { x: sells.map(r => r.date), y: sells.map(r => r.px_usd),
+      name: "매도", mode: "markers",
+      marker: { symbol: "triangle-down", size: 12, color: "#ef4444", line: { color: "#0b0f17", width: 1 } },
+      hovertemplate: "%{x}<br>매도 · $%{y:,.0f}<extra></extra>",
     },
   ];
   const layout = Object.assign({}, PLOTLY_LAYOUT_BASE, {
@@ -264,22 +212,19 @@ function renderPriceChart(rows) {
   Plotly.newPlot("priceChart", traces, layout, PLOTLY_CONFIG);
 }
 
-// ── 최근 rGold/RSI 차트 (가격 연동) ──────────────────────────
 function renderRatioRecent(rows) {
   const x   = rows.map(r => r.date);
   const rg  = rows.map(r => r.rgold != null ? (r.rgold - 1) * 100 : null);
   const rsi = rows.map(r => r.rsi);
 
   const traces = [
-    { x, y: rg, name: "rGold %", line: { color: "#22c55e", width: 1.5 }, mode: "lines", yaxis: "y" },
-    { x, y: rsi, name: "RSI",    line: { color: "#a855f7", width: 1.2 }, mode: "lines", yaxis: "y2" },
+    { x, y: rg,  name: "rGold %", line: { color: "#22c55e", width: 1.5 }, mode: "lines", yaxis: "y" },
+    { x, y: rsi, name: "RSI",     line: { color: "#a855f7", width: 1.2 }, mode: "lines", yaxis: "y2" },
   ];
   const shapes = [
-    { type:"line", xref:"paper", x0:0, x1:1, yref:"y", y0:-3,  y1:-3,  line:{ color:"#86efac", width:1, dash:"dot" } },
-    { type:"line", xref:"paper", x0:0, x1:1, yref:"y", y0:-7,  y1:-7,  line:{ color:"#22c55e", width:1, dash:"dash" } },
-    { type:"line", xref:"paper", x0:0, x1:1, yref:"y", y0:18,  y1:18,  line:{ color:"#f59e0b", width:1, dash:"dot" } },
-    { type:"line", xref:"paper", x0:0, x1:1, yref:"y", y0:30,  y1:30,  line:{ color:"#f59e0b", width:1, dash:"dash" } },
-    { type:"line", xref:"paper", x0:0, x1:1, yref:"y", y0:35,  y1:35,  line:{ color:"#ef4444", width:1, dash:"dash" } },
+    { type:"line", xref:"paper", x0:0, x1:1, yref:"y", y0:-3, y1:-3, line:{ color:"#4ade80", width:1, dash:"dash" } },
+    { type:"line", xref:"paper", x0:0, x1:1, yref:"y", y0:33, y1:33, line:{ color:"#ef4444", width:1, dash:"dash" } },
+    { type:"line", xref:"paper", x0:0, x1:1, yref:"y", y0:0,  y1:0,  line:{ color:"#8b97a7", width:0.6, dash:"dot" } },
   ];
   const layout = Object.assign({}, PLOTLY_LAYOUT_BASE, {
     yaxis:  Object.assign({}, PLOTLY_LAYOUT_BASE.yaxis, { title: "rGold %", ticksuffix: "%" }),
@@ -289,37 +234,25 @@ function renderRatioRecent(rows) {
   Plotly.newPlot("ratioChartRecent", traces, layout, PLOTLY_CONFIG);
 }
 
-// ── 전체 히스토리 차트 (v3_signal.json) ──────────────────────
 function renderFullHistory(sig) {
   const x  = sig.map(r => r.date);
   const px = sig.map(r => r.px);
   const ma = sig.map(r => r.ma200);
   const rg = sig.map(r => r.rgold != null ? (r.rgold - 1) * 100 : null);
 
-  // 매수/매도 첫 발화일만 마커로 (연속된 날짜는 grouping)
-  const scaleBuyDays  = _episodeStarts(sig, r => r.scale_buy && !r.strong_buy);
-  const strongBuyDays  = _episodeStarts(sig, r => r.strong_buy);
-  const cautionDays    = _episodeStarts(sig, r => r.caution);
-  const blowoffDays    = _episodeStarts(sig, r => r.blowoff);
+  // 연속 발화의 첫날만 마커
+  const buyDays  = _episodeStarts(sig, r => r.buy);
+  const sellDays = _episodeStarts(sig, r => r.sell);
 
-  // 가격 차트
   const priceTraces = [
     { x, y: px, name: "XAU/USD", line: { color: "#eab308", width: 1.5 }, mode: "lines" },
     { x, y: ma, name: "200일선", line: { color: "#8b97a7", width: 0.8, dash: "dot" }, mode: "lines" },
-    { x: scaleBuyDays.map(r => r.date), y: scaleBuyDays.map(r => r.px),
-      name: "분할매수▲", mode: "markers",
-      marker: { symbol: "triangle-up", size: 9, color: "#86efac", line: { color: "#0b0f17", width: 1 } },
-    },
-    { x: strongBuyDays.map(r => r.date), y: strongBuyDays.map(r => r.px),
-      name: "강력매수▲", mode: "markers",
+    { x: buyDays.map(r => r.date), y: buyDays.map(r => r.px),
+      name: "매수▲", mode: "markers",
       marker: { symbol: "triangle-up", size: 12, color: "#22c55e", line: { color: "#0b0f17", width: 1 } },
     },
-    { x: cautionDays.map(r => r.date), y: cautionDays.map(r => r.px),
-      name: "froth 경보▼", mode: "markers",
-      marker: { symbol: "triangle-down", size: 9, color: "#f59e0b", line: { color: "#0b0f17", width: 1 } },
-    },
-    { x: blowoffDays.map(r => r.date), y: blowoffDays.map(r => r.px),
-      name: "BLOWOFF▼", mode: "markers",
+    { x: sellDays.map(r => r.date), y: sellDays.map(r => r.px),
+      name: "매도▼", mode: "markers",
       marker: { symbol: "triangle-down", size: 12, color: "#ef4444", line: { color: "#0b0f17", width: 1 } },
     },
   ];
@@ -329,16 +262,13 @@ function renderFullHistory(sig) {
   });
   Plotly.newPlot("priceChartFull", priceTraces, priceLayout, PLOTLY_CONFIG);
 
-  // rGold 차트
   const ratioTraces = [
     { x, y: rg, name: "rGold %", line: { color: "#22c55e", width: 1 }, mode: "lines" },
   ];
   const shapes = [
-    { type:"line", xref:"paper", x0:0, x1:1, yref:"y", y0:-3,  y1:-3,  line:{ color:"#86efac", width:0.8, dash:"dot" } },
-    { type:"line", xref:"paper", x0:0, x1:1, yref:"y", y0:-7,  y1:-7,  line:{ color:"#22c55e", width:0.8, dash:"dash" } },
-    { type:"line", xref:"paper", x0:0, x1:1, yref:"y", y0:18,  y1:18,  line:{ color:"#f59e0b", width:0.8, dash:"dot" } },
-    { type:"line", xref:"paper", x0:0, x1:1, yref:"y", y0:30,  y1:30,  line:{ color:"#f59e0b", width:0.8, dash:"dash" } },
-    { type:"line", xref:"paper", x0:0, x1:1, yref:"y", y0:35,  y1:35,  line:{ color:"#ef4444", width:0.8, dash:"dash" } },
+    { type:"line", xref:"paper", x0:0, x1:1, yref:"y", y0:-3, y1:-3, line:{ color:"#4ade80", width:1, dash:"dash" } },
+    { type:"line", xref:"paper", x0:0, x1:1, yref:"y", y0:33, y1:33, line:{ color:"#ef4444", width:1, dash:"dash" } },
+    { type:"line", xref:"paper", x0:0, x1:1, yref:"y", y0:0,  y1:0,  line:{ color:"#8b97a7", width:0.6, dash:"dot" } },
   ];
   const ratioLayout = Object.assign({}, PLOTLY_LAYOUT_BASE, {
     yaxis: Object.assign({}, PLOTLY_LAYOUT_BASE.yaxis, { title: "rGold %", ticksuffix: "%" }),
@@ -348,7 +278,6 @@ function renderFullHistory(sig) {
   Plotly.newPlot("ratioChartFull", ratioTraces, ratioLayout, PLOTLY_CONFIG);
 }
 
-// 연속된 True 구간의 첫날만 추출 (매수/매도 에피소드 첫 발화)
 function _episodeStarts(sig, pred) {
   const out = [];
   let prev = false;
@@ -360,14 +289,13 @@ function _episodeStarts(sig, pred) {
   return out;
 }
 
-// ── 시그널 로그 (state 변경 이벤트) ────────────────────────
 function renderSignalLog(rows) {
   const changes = rows.filter(r => r.state_changed);
   const el = document.getElementById("signalLog");
   if (!changes.length) { el.innerHTML = '<div class="empty">최근 신호 변경 없음</div>'; return; }
   const html = ['<table><thead><tr><th>날짜</th><th>신호</th><th class="right">XAU/USD</th><th class="right">rGold</th><th class="right">RSI</th></tr></thead><tbody>'];
   changes.slice().reverse().forEach(r => {
-    const key = STATE_KEY[r.state] || 'HOLD';
+    const key = STATE_KEY[r.state] || 'hold';
     const rg = r.rgold != null ? (r.rgold - 1) * 100 : null;
     html.push(`<tr>
       <td>${r.date}</td>
@@ -381,15 +309,14 @@ function renderSignalLog(rows) {
   el.innerHTML = html.join("");
 }
 
-// ── 일일 스냅샷 테이블 ────────────────────────────────────
 function renderDailyTable(rows) {
   const el = document.getElementById("dailyTable");
   if (!rows.length) { el.innerHTML = '<div class="empty">데이터 없음</div>'; return; }
   const html = ['<table><thead><tr><th>날짜</th><th>신호</th><th class="right">XAU/USD</th><th class="right">200일선</th><th class="right">rGold</th><th class="right">RSI</th><th>div</th></tr></thead><tbody>'];
   rows.slice().reverse().slice(0, 60).forEach(r => {
-    const key = STATE_KEY[r.state] || 'HOLD';
+    const key = STATE_KEY[r.state] || 'hold';
     const rg = r.rgold != null ? (r.rgold - 1) * 100 : null;
-    const divTag = (r.bull_div ? '<span style="color:#22c55e">▲</span>' : '') + (r.bear_div ? '<span style="color:#ef4444">▼</span>' : '');
+    const divTag = r.bull_div ? '<span style="color:#22c55e">▲</span>' : '';
     html.push(`<tr>
       <td>${r.date}</td>
       <td class="state-cell state-${key}">${r.state}</td>
@@ -404,7 +331,6 @@ function renderDailyTable(rows) {
   el.innerHTML = html.join("");
 }
 
-// ── 데이터 로드 & 렌더 ──────────────────────────────────────
 async function main() {
   let history = [];
   let signal = [];
