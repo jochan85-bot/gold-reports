@@ -2286,5 +2286,21 @@
     "state_since": "2026-06-25",
     "state_days": 21,
     "state_changed": false
+  },
+  {
+    "date": "2026-07-14",
+    "timestamp": "2026-07-16 08:30:05 KST",
+    "px_usd": 4061.1,
+    "ma200": 4469.902,
+    "ma20": 4127.175,
+    "rgold": 0.9085,
+    "rsi": 41.9161,
+    "state": "관망",
+    "bull_div": false,
+    "buy": false,
+    "sell": false,
+    "state_since": "2026-06-25",
+    "state_days": 22,
+    "state_changed": false
   }
 ]
