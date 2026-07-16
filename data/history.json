@@ -2302,5 +2302,24 @@
     "state_since": "2026-06-25",
     "state_days": 22,
     "state_changed": false
+  },
+  {
+    "date": "2026-07-15",
+    "timestamp": "2026-07-17 00:25:09 KST",
+    "px_usd": 4044.0,
+    "ma200": 4471.4375,
+    "ma20": 4112.975,
+    "rgold": 0.9044,
+    "rsi": 40.9648,
+    "state": "관망",
+    "bull_div": false,
+    "buy": false,
+    "sell": false,
+    "state_since": "2026-06-25",
+    "state_days": 23,
+    "state_changed": false,
+    "retro_alerts": [
+      "🟢 매수 (소급) — 발화 6/24 $3,990 (rGold -10.2%) → 현재 $4,044 (rGold -9.6%), 23일 경과"
+    ]
   }
 ]
