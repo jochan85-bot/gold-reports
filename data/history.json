@@ -9,7 +9,8 @@
     "state": "관망",
     "bull_div": false,
     "buy": false,
-    "sell": false
+    "sell": false,
+    "display_state": "관망"
   },
   {
     "date": "2025-10-14",
@@ -21,7 +22,8 @@
     "state": "관망",
     "bull_div": false,
     "buy": false,
-    "sell": false
+    "sell": false,
+    "display_state": "관망"
   },
   {
     "date": "2025-10-15",
@@ -33,7 +35,8 @@
     "state": "관망",
     "bull_div": false,
     "buy": false,
-    "sell": false
+    "sell": false,
+    "display_state": "관망"
   },
   {
     "date": "2025-10-16",
@@ -45,7 +48,8 @@
     "state": "관망",
     "bull_div": false,
     "buy": false,
-    "sell": false
+    "sell": false,
+    "display_state": "관망"
   },
   {
     "date": "2025-10-17",
@@ -57,7 +61,8 @@
     "state": "관망",
     "bull_div": false,
     "buy": false,
-    "sell": false
+    "sell": false,
+    "display_state": "관망"
   },
   {
     "date": "2025-10-20",
@@ -69,7 +74,8 @@
     "state": "관망",
     "bull_div": false,
     "buy": false,
-    "sell": false
+    "sell": false,
+    "display_state": "관망"
   },
   {
     "date": "2025-10-21",
@@ -81,7 +87,8 @@
     "state": "관망",
     "bull_div": false,
     "buy": false,
-    "sell": false
+    "sell": false,
+    "display_state": "관망"
   },
   {
     "date": "2025-10-22",
@@ -93,7 +100,8 @@
     "state": "관망",
     "bull_div": false,
     "buy": false,
-    "sell": false
+    "sell": false,
+    "display_state": "관망"
   },
   {
     "date": "2025-10-23",
@@ -105,7 +113,8 @@
     "state": "관망",
     "bull_div": false,
     "buy": false,
-    "sell": false
+    "sell": false,
+    "display_state": "관망"
   },
   {
     "date": "2025-10-24",
@@ -117,7 +126,8 @@
     "state": "관망",
     "bull_div": false,
     "buy": false,
-    "sell": false
+    "sell": false,
+    "display_state": "관망"
   },
   {
     "date": "2025-10-27",
@@ -129,7 +139,8 @@
     "state": "매도",
     "bull_div": false,
     "buy": false,
-    "sell": true
+    "sell": true,
+    "display_state": "매도"
   },
   {
     "date": "2025-10-28",
@@ -141,7 +152,8 @@
     "state": "관망",
     "bull_div": false,
     "buy": false,
-    "sell": false
+    "sell": false,
+    "display_state": "관망"
   },
   {
     "date": "2025-10-29",
@@ -153,7 +165,8 @@
     "state": "관망",
     "bull_div": false,
     "buy": false,
-    "sell": false
+    "sell": false,
+    "display_state": "관망"
   },
   {
     "date": "2025-10-30",
@@ -165,7 +178,8 @@
     "state": "매도",
     "bull_div": false,
     "buy": false,
-    "sell": true
+    "sell": true,
+    "display_state": "매도"
   },
   {
     "date": "2025-10-31",
@@ -177,7 +191,8 @@
     "state": "관망",
     "bull_div": false,
     "buy": false,
-    "sell": false
+    "sell": false,
+    "display_state": "관망"
   },
   {
     "date": "2025-11-03",
@@ -189,7 +204,8 @@
     "state": "관망",
     "bull_div": false,
     "buy": false,
-    "sell": false
+    "sell": false,
+    "display_state": "관망"
   },
   {
     "date": "2025-11-04",
@@ -201,7 +217,8 @@
     "state": "관망",
     "bull_div": false,
     "buy": false,
-    "sell": false
+    "sell": false,
+    "display_state": "관망"
   },
   {
     "date": "2025-11-05",
@@ -213,7 +230,8 @@
     "state": "관망",
     "bull_div": false,
     "buy": false,
-    "sell": false
+    "sell": false,
+    "display_state": "관망"
   },
   {
     "date": "2025-11-06",
@@ -225,7 +243,8 @@
     "state": "관망",
     "bull_div": false,
     "buy": false,
-    "sell": false
+    "sell": false,
+    "display_state": "관망"
   },
   {
     "date": "2025-11-07",
@@ -237,7 +256,8 @@
     "state": "관망",
     "bull_div": false,
     "buy": false,
-    "sell": false
+    "sell": false,
+    "display_state": "관망"
   },
   {
     "date": "2025-11-10",
@@ -249,7 +269,8 @@
     "state": "관망",
     "bull_div": false,
     "buy": false,
-    "sell": false
+    "sell": false,
+    "display_state": "관망"
   },
   {
     "date": "2025-11-11",
@@ -261,7 +282,8 @@
     "state": "관망",
     "bull_div": false,
     "buy": false,
-    "sell": false
+    "sell": false,
+    "display_state": "관망"
   },
   {
     "date": "2025-11-12",
@@ -273,7 +295,8 @@
     "state": "관망",
     "bull_div": false,
     "buy": false,
-    "sell": false
+    "sell": false,
+    "display_state": "관망"
   },
   {
     "date": "2025-11-13",
@@ -285,7 +308,8 @@
     "state": "관망",
     "bull_div": false,
     "buy": false,
-    "sell": false
+    "sell": false,
+    "display_state": "관망"
   },
   {
     "date": "2025-11-14",
@@ -297,7 +321,8 @@
     "state": "관망",
     "bull_div": false,
     "buy": false,
-    "sell": false
+    "sell": false,
+    "display_state": "관망"
   },
   {
     "date": "2025-11-17",
@@ -309,7 +334,8 @@
     "state": "관망",
     "bull_div": false,
     "buy": false,
-    "sell": false
+    "sell": false,
+    "display_state": "관망"
   },
   {
     "date": "2025-11-18",
@@ -321,7 +347,8 @@
     "state": "관망",
     "bull_div": false,
     "buy": false,
-    "sell": false
+    "sell": false,
+    "display_state": "관망"
   },
   {
     "date": "2025-11-19",
@@ -333,7 +360,8 @@
     "state": "관망",
     "bull_div": false,
     "buy": false,
-    "sell": false
+    "sell": false,
+    "display_state": "관망"
   },
   {
     "date": "2025-11-20",
@@ -345,7 +373,8 @@
     "state": "관망",
     "bull_div": false,
     "buy": false,
-    "sell": false
+    "sell": false,
+    "display_state": "관망"
   },
   {
     "date": "2025-11-21",
@@ -357,7 +386,8 @@
     "state": "관망",
     "bull_div": false,
     "buy": false,
-    "sell": false
+    "sell": false,
+    "display_state": "관망"
   },
   {
     "date": "2025-11-24",
@@ -369,7 +399,8 @@
     "state": "관망",
     "bull_div": false,
     "buy": false,
-    "sell": false
+    "sell": false,
+    "display_state": "관망"
   },
   {
     "date": "2025-11-25",
@@ -381,7 +412,8 @@
     "state": "관망",
     "bull_div": false,
     "buy": false,
-    "sell": false
+    "sell": false,
+    "display_state": "관망"
   },
   {
     "date": "2025-11-26",
@@ -393,7 +425,8 @@
     "state": "관망",
     "bull_div": false,
     "buy": false,
-    "sell": false
+    "sell": false,
+    "display_state": "관망"
   },
   {
     "date": "2025-11-28",
@@ -405,7 +438,8 @@
     "state": "관망",
     "bull_div": false,
     "buy": false,
-    "sell": false
+    "sell": false,
+    "display_state": "관망"
   },
   {
     "date": "2025-12-01",
@@ -417,7 +451,8 @@
     "state": "관망",
     "bull_div": false,
     "buy": false,
-    "sell": false
+    "sell": false,
+    "display_state": "관망"
   },
   {
     "date": "2025-12-02",
@@ -429,7 +464,8 @@
     "state": "관망",
     "bull_div": false,
     "buy": false,
-    "sell": false
+    "sell": false,
+    "display_state": "관망"
   },
   {
     "date": "2025-12-03",
@@ -441,7 +477,8 @@
     "state": "관망",
     "bull_div": false,
     "buy": false,
-    "sell": false
+    "sell": false,
+    "display_state": "관망"
   },
   {
     "date": "2025-12-04",
@@ -453,7 +490,8 @@
     "state": "관망",
     "bull_div": false,
     "buy": false,
-    "sell": false
+    "sell": false,
+    "display_state": "관망"
   },
   {
     "date": "2025-12-05",
@@ -465,7 +503,8 @@
     "state": "관망",
     "bull_div": false,
     "buy": false,
-    "sell": false
+    "sell": false,
+    "display_state": "관망"
   },
   {
     "date": "2025-12-08",
@@ -477,7 +516,8 @@
     "state": "관망",
     "bull_div": false,
     "buy": false,
-    "sell": false
+    "sell": false,
+    "display_state": "관망"
   },
   {
     "date": "2025-12-09",
@@ -489,7 +529,8 @@
     "state": "관망",
     "bull_div": false,
     "buy": false,
-    "sell": false
+    "sell": false,
+    "display_state": "관망"
   },
   {
     "date": "2025-12-10",
@@ -501,7 +542,8 @@
     "state": "관망",
     "bull_div": false,
     "buy": false,
-    "sell": false
+    "sell": false,
+    "display_state": "관망"
   },
   {
     "date": "2025-12-11",
@@ -513,7 +555,8 @@
     "state": "관망",
     "bull_div": false,
     "buy": false,
-    "sell": false
+    "sell": false,
+    "display_state": "관망"
   },
   {
     "date": "2025-12-12",
@@ -525,7 +568,8 @@
     "state": "관망",
     "bull_div": false,
     "buy": false,
-    "sell": false
+    "sell": false,
+    "display_state": "관망"
   },
   {
     "date": "2025-12-15",
@@ -537,7 +581,8 @@
     "state": "관망",
     "bull_div": false,
     "buy": false,
-    "sell": false
+    "sell": false,
+    "display_state": "관망"
   },
   {
     "date": "2025-12-16",
@@ -549,7 +594,8 @@
     "state": "관망",
     "bull_div": false,
     "buy": false,
-    "sell": false
+    "sell": false,
+    "display_state": "관망"
   },
   {
     "date": "2025-12-17",
@@ -561,7 +607,8 @@
     "state": "관망",
     "bull_div": false,
     "buy": false,
-    "sell": false
+    "sell": false,
+    "display_state": "관망"
   },
   {
     "date": "2025-12-18",
@@ -573,7 +620,8 @@
     "state": "관망",
     "bull_div": false,
     "buy": false,
-    "sell": false
+    "sell": false,
+    "display_state": "관망"
   },
   {
     "date": "2025-12-19",
@@ -585,7 +633,8 @@
     "state": "관망",
     "bull_div": false,
     "buy": false,
-    "sell": false
+    "sell": false,
+    "display_state": "관망"
   },
   {
     "date": "2025-12-22",
@@ -597,7 +646,8 @@
     "state": "관망",
     "bull_div": false,
     "buy": false,
-    "sell": false
+    "sell": false,
+    "display_state": "관망"
   },
   {
     "date": "2025-12-23",
@@ -609,7 +659,8 @@
     "state": "관망",
     "bull_div": false,
     "buy": false,
-    "sell": false
+    "sell": false,
+    "display_state": "관망"
   },
   {
     "date": "2025-12-24",
@@ -621,7 +672,8 @@
     "state": "관망",
     "bull_div": false,
     "buy": false,
-    "sell": false
+    "sell": false,
+    "display_state": "관망"
   },
   {
     "date": "2025-12-26",
@@ -633,7 +685,8 @@
     "state": "관망",
     "bull_div": false,
     "buy": false,
-    "sell": false
+    "sell": false,
+    "display_state": "관망"
   },
   {
     "date": "2025-12-29",
@@ -645,7 +698,8 @@
     "state": "관망",
     "bull_div": false,
     "buy": false,
-    "sell": false
+    "sell": false,
+    "display_state": "관망"
   },
   {
     "date": "2025-12-30",
@@ -657,7 +711,8 @@
     "state": "관망",
     "bull_div": false,
     "buy": false,
-    "sell": false
+    "sell": false,
+    "display_state": "관망"
   },
   {
     "date": "2025-12-31",
@@ -669,7 +724,8 @@
     "state": "관망",
     "bull_div": false,
     "buy": false,
-    "sell": false
+    "sell": false,
+    "display_state": "관망"
   },
   {
     "date": "2026-01-02",
@@ -681,7 +737,8 @@
     "state": "관망",
     "bull_div": false,
     "buy": false,
-    "sell": false
+    "sell": false,
+    "display_state": "관망"
   },
   {
     "date": "2026-01-05",
@@ -693,7 +750,8 @@
     "state": "관망",
     "bull_div": false,
     "buy": false,
-    "sell": false
+    "sell": false,
+    "display_state": "관망"
   },
   {
     "date": "2026-01-06",
@@ -705,7 +763,8 @@
     "state": "관망",
     "bull_div": false,
     "buy": false,
-    "sell": false
+    "sell": false,
+    "display_state": "관망"
   },
   {
     "date": "2026-01-07",
@@ -717,7 +776,8 @@
     "state": "관망",
     "bull_div": false,
     "buy": false,
-    "sell": false
+    "sell": false,
+    "display_state": "관망"
   },
   {
     "date": "2026-01-08",
@@ -729,7 +789,8 @@
     "state": "관망",
     "bull_div": false,
     "buy": false,
-    "sell": false
+    "sell": false,
+    "display_state": "관망"
   },
   {
     "date": "2026-01-09",
@@ -741,7 +802,8 @@
     "state": "관망",
     "bull_div": false,
     "buy": false,
-    "sell": false
+    "sell": false,
+    "display_state": "관망"
   },
   {
     "date": "2026-01-12",
@@ -753,7 +815,8 @@
     "state": "관망",
     "bull_div": false,
     "buy": false,
-    "sell": false
+    "sell": false,
+    "display_state": "관망"
   },
   {
     "date": "2026-01-13",
@@ -765,7 +828,8 @@
     "state": "관망",
     "bull_div": false,
     "buy": false,
-    "sell": false
+    "sell": false,
+    "display_state": "관망"
   },
   {
     "date": "2026-01-14",
@@ -777,7 +841,8 @@
     "state": "관망",
     "bull_div": false,
     "buy": false,
-    "sell": false
+    "sell": false,
+    "display_state": "관망"
   },
   {
     "date": "2026-01-15",
@@ -789,7 +854,8 @@
     "state": "관망",
     "bull_div": false,
     "buy": false,
-    "sell": false
+    "sell": false,
+    "display_state": "관망"
   },
   {
     "date": "2026-01-16",
@@ -801,7 +867,8 @@
     "state": "관망",
     "bull_div": false,
     "buy": false,
-    "sell": false
+    "sell": false,
+    "display_state": "관망"
   },
   {
     "date": "2026-01-20",
@@ -813,7 +880,8 @@
     "state": "관망",
     "bull_div": false,
     "buy": false,
-    "sell": false
+    "sell": false,
+    "display_state": "관망"
   },
   {
     "date": "2026-01-21",
@@ -825,7 +893,8 @@
     "state": "관망",
     "bull_div": false,
     "buy": false,
-    "sell": false
+    "sell": false,
+    "display_state": "관망"
   },
   {
     "date": "2026-01-22",
@@ -837,7 +906,8 @@
     "state": "관망",
     "bull_div": false,
     "buy": false,
-    "sell": false
+    "sell": false,
+    "display_state": "관망"
   },
   {
     "date": "2026-01-23",
@@ -849,7 +919,8 @@
     "state": "관망",
     "bull_div": false,
     "buy": false,
-    "sell": false
+    "sell": false,
+    "display_state": "관망"
   },
   {
     "date": "2026-01-26",
@@ -861,7 +932,8 @@
     "state": "관망",
     "bull_div": false,
     "buy": false,
-    "sell": false
+    "sell": false,
+    "display_state": "관망"
   },
   {
     "date": "2026-01-27",
@@ -873,7 +945,8 @@
     "state": "관망",
     "bull_div": false,
     "buy": false,
-    "sell": false
+    "sell": false,
+    "display_state": "관망"
   },
   {
     "date": "2026-01-28",
@@ -885,7 +958,8 @@
     "state": "관망",
     "bull_div": false,
     "buy": false,
-    "sell": false
+    "sell": false,
+    "display_state": "관망"
   },
   {
     "date": "2026-01-29",
@@ -897,7 +971,8 @@
     "state": "관망",
     "bull_div": false,
     "buy": false,
-    "sell": false
+    "sell": false,
+    "display_state": "관망"
   },
   {
     "date": "2026-01-30",
@@ -909,7 +984,8 @@
     "state": "매도",
     "bull_div": false,
     "buy": false,
-    "sell": true
+    "sell": true,
+    "display_state": "매도"
   },
   {
     "date": "2026-02-02",
@@ -921,7 +997,8 @@
     "state": "매도",
     "bull_div": false,
     "buy": false,
-    "sell": true
+    "sell": true,
+    "display_state": "매도"
   },
   {
     "date": "2026-02-03",
@@ -933,7 +1010,8 @@
     "state": "관망",
     "bull_div": false,
     "buy": false,
-    "sell": false
+    "sell": false,
+    "display_state": "관망"
   },
   {
     "date": "2026-02-04",
@@ -945,7 +1023,8 @@
     "state": "관망",
     "bull_div": false,
     "buy": false,
-    "sell": false
+    "sell": false,
+    "display_state": "관망"
   },
   {
     "date": "2026-02-05",
@@ -957,7 +1036,8 @@
     "state": "관망",
     "bull_div": false,
     "buy": false,
-    "sell": false
+    "sell": false,
+    "display_state": "관망"
   },
   {
     "date": "2026-02-06",
@@ -969,7 +1049,8 @@
     "state": "관망",
     "bull_div": false,
     "buy": false,
-    "sell": false
+    "sell": false,
+    "display_state": "관망"
   },
   {
     "date": "2026-02-09",
@@ -981,7 +1062,8 @@
     "state": "관망",
     "bull_div": false,
     "buy": false,
-    "sell": false
+    "sell": false,
+    "display_state": "관망"
   },
   {
     "date": "2026-02-10",
@@ -993,7 +1075,8 @@
     "state": "관망",
     "bull_div": false,
     "buy": false,
-    "sell": false
+    "sell": false,
+    "display_state": "관망"
   },
   {
     "date": "2026-02-11",
@@ -1005,7 +1088,8 @@
     "state": "관망",
     "bull_div": false,
     "buy": false,
-    "sell": false
+    "sell": false,
+    "display_state": "관망"
   },
   {
     "date": "2026-02-12",
@@ -1017,7 +1101,8 @@
     "state": "매도",
     "bull_div": false,
     "buy": false,
-    "sell": true
+    "sell": true,
+    "display_state": "매도"
   },
   {
     "date": "2026-02-13",
@@ -1029,7 +1114,8 @@
     "state": "관망",
     "bull_div": false,
     "buy": false,
-    "sell": false
+    "sell": false,
+    "display_state": "관망"
   },
   {
     "date": "2026-02-17",
@@ -1041,7 +1127,8 @@
     "state": "매도",
     "bull_div": false,
     "buy": false,
-    "sell": true
+    "sell": true,
+    "display_state": "매도"
   },
   {
     "date": "2026-02-18",
@@ -1053,7 +1140,8 @@
     "state": "관망",
     "bull_div": false,
     "buy": false,
-    "sell": false
+    "sell": false,
+    "display_state": "관망"
   },
   {
     "date": "2026-02-19",
@@ -1065,7 +1153,8 @@
     "state": "매도",
     "bull_div": false,
     "buy": false,
-    "sell": true
+    "sell": true,
+    "display_state": "매도"
   },
   {
     "date": "2026-02-20",
@@ -1077,7 +1166,8 @@
     "state": "관망",
     "bull_div": false,
     "buy": false,
-    "sell": false
+    "sell": false,
+    "display_state": "관망"
   },
   {
     "date": "2026-02-23",
@@ -1089,7 +1179,8 @@
     "state": "관망",
     "bull_div": false,
     "buy": false,
-    "sell": false
+    "sell": false,
+    "display_state": "관망"
   },
   {
     "date": "2026-02-24",
@@ -1101,7 +1192,8 @@
     "state": "관망",
     "bull_div": false,
     "buy": false,
-    "sell": false
+    "sell": false,
+    "display_state": "관망"
   },
   {
     "date": "2026-02-25",
@@ -1113,7 +1205,8 @@
     "state": "관망",
     "bull_div": false,
     "buy": false,
-    "sell": false
+    "sell": false,
+    "display_state": "관망"
   },
   {
     "date": "2026-02-26",
@@ -1125,7 +1218,8 @@
     "state": "관망",
     "bull_div": false,
     "buy": false,
-    "sell": false
+    "sell": false,
+    "display_state": "관망"
   },
   {
     "date": "2026-02-27",
@@ -1137,7 +1231,8 @@
     "state": "관망",
     "bull_div": false,
     "buy": false,
-    "sell": false
+    "sell": false,
+    "display_state": "관망"
   },
   {
     "date": "2026-03-02",
@@ -1149,7 +1244,8 @@
     "state": "관망",
     "bull_div": false,
     "buy": false,
-    "sell": false
+    "sell": false,
+    "display_state": "관망"
   },
   {
     "date": "2026-03-03",
@@ -1161,7 +1257,8 @@
     "state": "관망",
     "bull_div": false,
     "buy": false,
-    "sell": false
+    "sell": false,
+    "display_state": "관망"
   },
   {
     "date": "2026-03-04",
@@ -1173,7 +1270,8 @@
     "state": "관망",
     "bull_div": false,
     "buy": false,
-    "sell": false
+    "sell": false,
+    "display_state": "관망"
   },
   {
     "date": "2026-03-05",
@@ -1185,7 +1283,8 @@
     "state": "매도",
     "bull_div": false,
     "buy": false,
-    "sell": true
+    "sell": true,
+    "display_state": "매도"
   },
   {
     "date": "2026-03-06",
@@ -1197,7 +1296,8 @@
     "state": "관망",
     "bull_div": false,
     "buy": false,
-    "sell": false
+    "sell": false,
+    "display_state": "관망"
   },
   {
     "date": "2026-03-09",
@@ -1209,7 +1309,8 @@
     "state": "관망",
     "bull_div": false,
     "buy": false,
-    "sell": false
+    "sell": false,
+    "display_state": "관망"
   },
   {
     "date": "2026-03-10",
@@ -1221,7 +1322,8 @@
     "state": "관망",
     "bull_div": false,
     "buy": false,
-    "sell": false
+    "sell": false,
+    "display_state": "관망"
   },
   {
     "date": "2026-03-11",
@@ -1233,7 +1335,8 @@
     "state": "관망",
     "bull_div": false,
     "buy": false,
-    "sell": false
+    "sell": false,
+    "display_state": "관망"
   },
   {
     "date": "2026-03-12",
@@ -1245,7 +1348,8 @@
     "state": "관망",
     "bull_div": false,
     "buy": false,
-    "sell": false
+    "sell": false,
+    "display_state": "관망"
   },
   {
     "date": "2026-03-13",
@@ -1257,7 +1361,8 @@
     "state": "매도",
     "bull_div": false,
     "buy": false,
-    "sell": true
+    "sell": true,
+    "display_state": "매도"
   },
   {
     "date": "2026-03-16",
@@ -1269,7 +1374,8 @@
     "state": "매도",
     "bull_div": false,
     "buy": false,
-    "sell": true
+    "sell": true,
+    "display_state": "매도"
   },
   {
     "date": "2026-03-17",
@@ -1281,7 +1387,8 @@
     "state": "매도",
     "bull_div": false,
     "buy": false,
-    "sell": true
+    "sell": true,
+    "display_state": "매도"
   },
   {
     "date": "2026-03-18",
@@ -1293,7 +1400,8 @@
     "state": "매도",
     "bull_div": false,
     "buy": false,
-    "sell": true
+    "sell": true,
+    "display_state": "매도"
   },
   {
     "date": "2026-03-19",
@@ -1305,7 +1413,8 @@
     "state": "관망",
     "bull_div": false,
     "buy": false,
-    "sell": false
+    "sell": false,
+    "display_state": "관망"
   },
   {
     "date": "2026-03-20",
@@ -1317,7 +1426,8 @@
     "state": "관망",
     "bull_div": false,
     "buy": false,
-    "sell": false
+    "sell": false,
+    "display_state": "관망"
   },
   {
     "date": "2026-03-23",
@@ -1329,7 +1439,8 @@
     "state": "관망",
     "bull_div": false,
     "buy": false,
-    "sell": false
+    "sell": false,
+    "display_state": "관망"
   },
   {
     "date": "2026-03-24",
@@ -1341,7 +1452,8 @@
     "state": "관망",
     "bull_div": false,
     "buy": false,
-    "sell": false
+    "sell": false,
+    "display_state": "관망"
   },
   {
     "date": "2026-03-25",
@@ -1353,7 +1465,8 @@
     "state": "관망",
     "bull_div": false,
     "buy": false,
-    "sell": false
+    "sell": false,
+    "display_state": "관망"
   },
   {
     "date": "2026-03-26",
@@ -1365,7 +1478,8 @@
     "state": "관망",
     "bull_div": true,
     "buy": false,
-    "sell": false
+    "sell": false,
+    "display_state": "관망"
   },
   {
     "date": "2026-03-27",
@@ -1377,7 +1491,8 @@
     "state": "관망",
     "bull_div": false,
     "buy": false,
-    "sell": false
+    "sell": false,
+    "display_state": "관망"
   },
   {
     "date": "2026-03-30",
@@ -1389,7 +1504,8 @@
     "state": "관망",
     "bull_div": false,
     "buy": false,
-    "sell": false
+    "sell": false,
+    "display_state": "관망"
   },
   {
     "date": "2026-03-31",
@@ -1401,7 +1517,8 @@
     "state": "관망",
     "bull_div": false,
     "buy": false,
-    "sell": false
+    "sell": false,
+    "display_state": "관망"
   },
   {
     "date": "2026-04-01",
@@ -1413,7 +1530,8 @@
     "state": "관망",
     "bull_div": false,
     "buy": false,
-    "sell": false
+    "sell": false,
+    "display_state": "관망"
   },
   {
     "date": "2026-04-02",
@@ -1425,7 +1543,8 @@
     "state": "관망",
     "bull_div": false,
     "buy": false,
-    "sell": false
+    "sell": false,
+    "display_state": "관망"
   },
   {
     "date": "2026-04-06",
@@ -1437,7 +1556,8 @@
     "state": "관망",
     "bull_div": false,
     "buy": false,
-    "sell": false
+    "sell": false,
+    "display_state": "관망"
   },
   {
     "date": "2026-04-07",
@@ -1449,7 +1569,8 @@
     "state": "관망",
     "bull_div": false,
     "buy": false,
-    "sell": false
+    "sell": false,
+    "display_state": "관망"
   },
   {
     "date": "2026-04-08",
@@ -1461,7 +1582,8 @@
     "state": "관망",
     "bull_div": false,
     "buy": false,
-    "sell": false
+    "sell": false,
+    "display_state": "관망"
   },
   {
     "date": "2026-04-09",
@@ -1473,7 +1595,8 @@
     "state": "관망",
     "bull_div": false,
     "buy": false,
-    "sell": false
+    "sell": false,
+    "display_state": "관망"
   },
   {
     "date": "2026-04-10",
@@ -1485,7 +1608,8 @@
     "state": "관망",
     "bull_div": false,
     "buy": false,
-    "sell": false
+    "sell": false,
+    "display_state": "관망"
   },
   {
     "date": "2026-04-13",
@@ -1497,7 +1621,8 @@
     "state": "관망",
     "bull_div": false,
     "buy": false,
-    "sell": false
+    "sell": false,
+    "display_state": "관망"
   },
   {
     "date": "2026-04-14",
@@ -1509,7 +1634,8 @@
     "state": "관망",
     "bull_div": false,
     "buy": false,
-    "sell": false
+    "sell": false,
+    "display_state": "관망"
   },
   {
     "date": "2026-04-15",
@@ -1521,7 +1647,8 @@
     "state": "관망",
     "bull_div": false,
     "buy": false,
-    "sell": false
+    "sell": false,
+    "display_state": "관망"
   },
   {
     "date": "2026-04-16",
@@ -1533,7 +1660,8 @@
     "state": "관망",
     "bull_div": false,
     "buy": false,
-    "sell": false
+    "sell": false,
+    "display_state": "관망"
   },
   {
     "date": "2026-04-17",
@@ -1545,7 +1673,8 @@
     "state": "관망",
     "bull_div": false,
     "buy": false,
-    "sell": false
+    "sell": false,
+    "display_state": "관망"
   },
   {
     "date": "2026-04-20",
@@ -1557,7 +1686,8 @@
     "state": "관망",
     "bull_div": false,
     "buy": false,
-    "sell": false
+    "sell": false,
+    "display_state": "관망"
   },
   {
     "date": "2026-04-21",
@@ -1569,7 +1699,8 @@
     "state": "관망",
     "bull_div": false,
     "buy": false,
-    "sell": false
+    "sell": false,
+    "display_state": "관망"
   },
   {
     "date": "2026-04-22",
@@ -1581,7 +1712,8 @@
     "state": "관망",
     "bull_div": false,
     "buy": false,
-    "sell": false
+    "sell": false,
+    "display_state": "관망"
   },
   {
     "date": "2026-04-23",
@@ -1593,7 +1725,8 @@
     "state": "관망",
     "bull_div": false,
     "buy": false,
-    "sell": false
+    "sell": false,
+    "display_state": "관망"
   },
   {
     "date": "2026-04-24",
@@ -1605,7 +1738,8 @@
     "state": "관망",
     "bull_div": false,
     "buy": false,
-    "sell": false
+    "sell": false,
+    "display_state": "관망"
   },
   {
     "date": "2026-04-27",
@@ -1617,7 +1751,8 @@
     "state": "관망",
     "bull_div": false,
     "buy": false,
-    "sell": false
+    "sell": false,
+    "display_state": "관망"
   },
   {
     "date": "2026-04-28",
@@ -1629,7 +1764,8 @@
     "state": "관망",
     "bull_div": false,
     "buy": false,
-    "sell": false
+    "sell": false,
+    "display_state": "관망"
   },
   {
     "date": "2026-04-29",
@@ -1641,7 +1777,8 @@
     "state": "관망",
     "bull_div": false,
     "buy": false,
-    "sell": false
+    "sell": false,
+    "display_state": "관망"
   },
   {
     "date": "2026-04-30",
@@ -1653,7 +1790,8 @@
     "state": "관망",
     "bull_div": false,
     "buy": false,
-    "sell": false
+    "sell": false,
+    "display_state": "관망"
   },
   {
     "date": "2026-05-01",
@@ -1665,7 +1803,8 @@
     "state": "관망",
     "bull_div": false,
     "buy": false,
-    "sell": false
+    "sell": false,
+    "display_state": "관망"
   },
   {
     "date": "2026-05-04",
@@ -1677,7 +1816,8 @@
     "state": "관망",
     "bull_div": false,
     "buy": false,
-    "sell": false
+    "sell": false,
+    "display_state": "관망"
   },
   {
     "date": "2026-05-05",
@@ -1689,7 +1829,8 @@
     "state": "관망",
     "bull_div": false,
     "buy": false,
-    "sell": false
+    "sell": false,
+    "display_state": "관망"
   },
   {
     "date": "2026-05-06",
@@ -1701,7 +1842,8 @@
     "state": "관망",
     "bull_div": false,
     "buy": false,
-    "sell": false
+    "sell": false,
+    "display_state": "관망"
   },
   {
     "date": "2026-05-07",
@@ -1713,7 +1855,8 @@
     "state": "관망",
     "bull_div": false,
     "buy": false,
-    "sell": false
+    "sell": false,
+    "display_state": "관망"
   },
   {
     "date": "2026-05-08",
@@ -1725,7 +1868,8 @@
     "state": "관망",
     "bull_div": false,
     "buy": false,
-    "sell": false
+    "sell": false,
+    "display_state": "관망"
   },
   {
     "date": "2026-05-11",
@@ -1737,7 +1881,8 @@
     "state": "관망",
     "bull_div": false,
     "buy": false,
-    "sell": false
+    "sell": false,
+    "display_state": "관망"
   },
   {
     "date": "2026-05-12",
@@ -1749,7 +1894,8 @@
     "state": "관망",
     "bull_div": false,
     "buy": false,
-    "sell": false
+    "sell": false,
+    "display_state": "관망"
   },
   {
     "date": "2026-05-13",
@@ -1761,7 +1907,8 @@
     "state": "관망",
     "bull_div": false,
     "buy": false,
-    "sell": false
+    "sell": false,
+    "display_state": "관망"
   },
   {
     "date": "2026-05-14",
@@ -1773,7 +1920,8 @@
     "state": "관망",
     "bull_div": false,
     "buy": false,
-    "sell": false
+    "sell": false,
+    "display_state": "관망"
   },
   {
     "date": "2026-05-15",
@@ -1785,7 +1933,8 @@
     "state": "관망",
     "bull_div": false,
     "buy": false,
-    "sell": false
+    "sell": false,
+    "display_state": "관망"
   },
   {
     "date": "2026-05-18",
@@ -1797,7 +1946,8 @@
     "state": "관망",
     "bull_div": false,
     "buy": false,
-    "sell": false
+    "sell": false,
+    "display_state": "관망"
   },
   {
     "date": "2026-05-19",
@@ -1809,7 +1959,8 @@
     "state": "관망",
     "bull_div": false,
     "buy": false,
-    "sell": false
+    "sell": false,
+    "display_state": "관망"
   },
   {
     "date": "2026-05-20",
@@ -1821,7 +1972,8 @@
     "state": "관망",
     "bull_div": false,
     "buy": false,
-    "sell": false
+    "sell": false,
+    "display_state": "관망"
   },
   {
     "date": "2026-05-21",
@@ -1833,7 +1985,8 @@
     "state": "관망",
     "bull_div": false,
     "buy": false,
-    "sell": false
+    "sell": false,
+    "display_state": "관망"
   },
   {
     "date": "2026-05-22",
@@ -1845,7 +1998,8 @@
     "state": "관망",
     "bull_div": false,
     "buy": false,
-    "sell": false
+    "sell": false,
+    "display_state": "관망"
   },
   {
     "date": "2026-05-26",
@@ -1857,7 +2011,8 @@
     "state": "관망",
     "bull_div": false,
     "buy": false,
-    "sell": false
+    "sell": false,
+    "display_state": "관망"
   },
   {
     "date": "2026-05-27",
@@ -1869,7 +2024,8 @@
     "state": "관망",
     "bull_div": false,
     "buy": false,
-    "sell": false
+    "sell": false,
+    "display_state": "관망"
   },
   {
     "date": "2026-05-28",
@@ -1881,7 +2037,8 @@
     "state": "관망",
     "bull_div": false,
     "buy": false,
-    "sell": false
+    "sell": false,
+    "display_state": "관망"
   },
   {
     "date": "2026-05-29",
@@ -1893,7 +2050,8 @@
     "state": "관망",
     "bull_div": false,
     "buy": false,
-    "sell": false
+    "sell": false,
+    "display_state": "관망"
   },
   {
     "date": "2026-06-01",
@@ -1905,7 +2063,8 @@
     "state": "관망",
     "bull_div": false,
     "buy": false,
-    "sell": false
+    "sell": false,
+    "display_state": "관망"
   },
   {
     "date": "2026-06-02",
@@ -1917,7 +2076,8 @@
     "state": "관망",
     "bull_div": false,
     "buy": false,
-    "sell": false
+    "sell": false,
+    "display_state": "관망"
   },
   {
     "date": "2026-06-03",
@@ -1929,7 +2089,8 @@
     "state": "관망",
     "bull_div": true,
     "buy": false,
-    "sell": false
+    "sell": false,
+    "display_state": "관망"
   },
   {
     "date": "2026-06-04",
@@ -1941,7 +2102,8 @@
     "state": "관망",
     "bull_div": false,
     "buy": false,
-    "sell": false
+    "sell": false,
+    "display_state": "관망"
   },
   {
     "date": "2026-06-05",
@@ -1953,7 +2115,8 @@
     "state": "관망",
     "bull_div": false,
     "buy": false,
-    "sell": false
+    "sell": false,
+    "display_state": "관망"
   },
   {
     "date": "2026-06-08",
@@ -1965,7 +2128,8 @@
     "state": "관망",
     "bull_div": false,
     "buy": false,
-    "sell": false
+    "sell": false,
+    "display_state": "관망"
   },
   {
     "date": "2026-06-09",
@@ -1977,7 +2141,8 @@
     "state": "관망",
     "bull_div": false,
     "buy": false,
-    "sell": false
+    "sell": false,
+    "display_state": "관망"
   },
   {
     "date": "2026-06-10",
@@ -1989,7 +2154,8 @@
     "state": "관망",
     "bull_div": false,
     "buy": false,
-    "sell": false
+    "sell": false,
+    "display_state": "관망"
   },
   {
     "date": "2026-06-11",
@@ -2001,7 +2167,8 @@
     "state": "관망",
     "bull_div": false,
     "buy": false,
-    "sell": false
+    "sell": false,
+    "display_state": "관망"
   },
   {
     "date": "2026-06-12",
@@ -2013,7 +2180,8 @@
     "state": "관망",
     "bull_div": false,
     "buy": false,
-    "sell": false
+    "sell": false,
+    "display_state": "관망"
   },
   {
     "date": "2026-06-15",
@@ -2025,7 +2193,8 @@
     "state": "관망",
     "bull_div": false,
     "buy": false,
-    "sell": false
+    "sell": false,
+    "display_state": "관망"
   },
   {
     "date": "2026-06-16",
@@ -2037,7 +2206,8 @@
     "state": "관망",
     "bull_div": false,
     "buy": false,
-    "sell": false
+    "sell": false,
+    "display_state": "관망"
   },
   {
     "date": "2026-06-17",
@@ -2049,7 +2219,8 @@
     "state": "관망",
     "bull_div": false,
     "buy": false,
-    "sell": false
+    "sell": false,
+    "display_state": "관망"
   },
   {
     "date": "2026-06-18",
@@ -2061,7 +2232,8 @@
     "state": "관망",
     "bull_div": false,
     "buy": false,
-    "sell": false
+    "sell": false,
+    "display_state": "관망"
   },
   {
     "date": "2026-06-22",
@@ -2073,7 +2245,8 @@
     "state": "관망",
     "bull_div": false,
     "buy": false,
-    "sell": false
+    "sell": false,
+    "display_state": "관망"
   },
   {
     "date": "2026-06-23",
@@ -2085,7 +2258,8 @@
     "state": "관망",
     "bull_div": false,
     "buy": false,
-    "sell": false
+    "sell": false,
+    "display_state": "관망"
   },
   {
     "date": "2026-06-24",
@@ -2097,7 +2271,8 @@
     "state": "매수",
     "bull_div": true,
     "buy": true,
-    "sell": false
+    "sell": false,
+    "display_state": "매수"
   },
   {
     "date": "2026-06-25",
@@ -2109,7 +2284,12 @@
     "state": "관망",
     "bull_div": false,
     "buy": false,
-    "sell": false
+    "sell": false,
+    "buy_episode": {
+      "fired": "2026-06-24",
+      "day": 1
+    },
+    "display_state": "매수 구간"
   },
   {
     "date": "2026-06-26",
@@ -2121,7 +2301,12 @@
     "state": "관망",
     "bull_div": false,
     "buy": false,
-    "sell": false
+    "sell": false,
+    "buy_episode": {
+      "fired": "2026-06-24",
+      "day": 2
+    },
+    "display_state": "매수 구간"
   },
   {
     "date": "2026-06-29",
@@ -2133,7 +2318,12 @@
     "state": "관망",
     "bull_div": false,
     "buy": false,
-    "sell": false
+    "sell": false,
+    "buy_episode": {
+      "fired": "2026-06-24",
+      "day": 5
+    },
+    "display_state": "매수 구간"
   },
   {
     "date": "2026-06-30",
@@ -2145,7 +2335,12 @@
     "state": "관망",
     "bull_div": false,
     "buy": false,
-    "sell": false
+    "sell": false,
+    "buy_episode": {
+      "fired": "2026-06-24",
+      "day": 6
+    },
+    "display_state": "매수 구간"
   },
   {
     "date": "2026-07-01",
@@ -2157,7 +2352,12 @@
     "state": "관망",
     "bull_div": false,
     "buy": false,
-    "sell": false
+    "sell": false,
+    "buy_episode": {
+      "fired": "2026-06-24",
+      "day": 7
+    },
+    "display_state": "매수 구간"
   },
   {
     "date": "2026-07-02",
@@ -2173,7 +2373,12 @@
     "sell": false,
     "state_since": "2026-06-25",
     "state_days": 8,
-    "state_changed": false
+    "state_changed": false,
+    "buy_episode": {
+      "fired": "2026-06-24",
+      "day": 8
+    },
+    "display_state": "매수 구간"
   },
   {
     "date": "2026-07-03",
@@ -2189,7 +2394,12 @@
     "sell": false,
     "state_since": "2026-06-25",
     "state_days": 9,
-    "state_changed": false
+    "state_changed": false,
+    "buy_episode": {
+      "fired": "2026-06-24",
+      "day": 9
+    },
+    "display_state": "매수 구간"
   },
   {
     "date": "2026-07-06",
@@ -2205,7 +2415,12 @@
     "sell": false,
     "state_since": "2026-06-25",
     "state_days": 12,
-    "state_changed": false
+    "state_changed": false,
+    "buy_episode": {
+      "fired": "2026-06-24",
+      "day": 12
+    },
+    "display_state": "매수 구간"
   },
   {
     "date": "2026-07-07",
@@ -2221,7 +2436,12 @@
     "sell": false,
     "state_since": "2026-06-25",
     "state_days": 13,
-    "state_changed": false
+    "state_changed": false,
+    "buy_episode": {
+      "fired": "2026-06-24",
+      "day": 13
+    },
+    "display_state": "매수 구간"
   },
   {
     "date": "2026-07-08",
@@ -2237,7 +2457,12 @@
     "sell": false,
     "state_since": "2026-06-25",
     "state_days": 15,
-    "state_changed": false
+    "state_changed": false,
+    "buy_episode": {
+      "fired": "2026-06-24",
+      "day": 14
+    },
+    "display_state": "매수 구간"
   },
   {
     "date": "2026-07-09",
@@ -2253,7 +2478,12 @@
     "sell": false,
     "state_since": "2026-06-25",
     "state_days": 17,
-    "state_changed": false
+    "state_changed": false,
+    "buy_episode": {
+      "fired": "2026-06-24",
+      "day": 15
+    },
+    "display_state": "매수 구간"
   },
   {
     "date": "2026-07-10",
@@ -2269,7 +2499,12 @@
     "sell": false,
     "state_since": "2026-06-25",
     "state_days": 19,
-    "state_changed": false
+    "state_changed": false,
+    "buy_episode": {
+      "fired": "2026-06-24",
+      "day": 16
+    },
+    "display_state": "매수 구간"
   },
   {
     "date": "2026-07-13",
@@ -2285,7 +2520,12 @@
     "sell": false,
     "state_since": "2026-06-25",
     "state_days": 21,
-    "state_changed": false
+    "state_changed": false,
+    "buy_episode": {
+      "fired": "2026-06-24",
+      "day": 19
+    },
+    "display_state": "매수 구간"
   },
   {
     "date": "2026-07-14",
@@ -2301,7 +2541,12 @@
     "sell": false,
     "state_since": "2026-06-25",
     "state_days": 22,
-    "state_changed": false
+    "state_changed": false,
+    "buy_episode": {
+      "fired": "2026-06-24",
+      "day": 20
+    },
+    "display_state": "매수 구간"
   },
   {
     "date": "2026-07-15",
@@ -2320,6 +2565,11 @@
     "state_changed": false,
     "retro_alerts": [
       "🟢 매수 (소급) — 발화 6/24 $3,990 (rGold -10.2%) → 현재 $4,044 (rGold -9.6%), 23일 경과"
-    ]
+    ],
+    "buy_episode": {
+      "fired": "2026-06-24",
+      "day": 21
+    },
+    "display_state": "매수 구간"
   }
 ]

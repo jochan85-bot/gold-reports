@@ -128,16 +128,18 @@
   </main>
 
   <footer>
-    데이터 갱신: 매일 KST 17:00 ·
+    데이터 갱신: 매일 KST 08:30 ·
     <a href="data/history.json">history.json</a> ·
     <a href="data/v3_signal.json">v3_signal.json</a> ·
     <a href="https://github.com/jochan85-bot/gold-reports">GitHub</a>
   </footer>
 
 <script>
-const STATE_COLOR = { '매수': '#22c55e', '매도': '#ef4444', '관망': '#8b97a7' };
-const STATE_LABEL = { '매수': '🟢 매수',   '매도': '🔴 매도',   '관망': '⚪ 관망' };
-const STATE_KEY   = { '매수': 'buy',       '매도': 'sell',      '관망': 'hold' };
+const STATE_COLOR = { '매수': '#22c55e', '매도': '#ef4444', '관망': '#8b97a7', '매수 구간': '#22c55e' };
+const STATE_LABEL = { '매수': '🟢 매수',   '매도': '🔴 매도',   '관망': '⚪ 관망', '매수 구간': '🟢 매수 구간' };
+const STATE_KEY   = { '매수': 'buy',       '매도': 'sell',      '관망': 'hold',   '매수 구간': 'buy' };
+// display_state: 매수 에피소드 창(발화 후 50일 OR rGold>-3% 회복까지) 표시용 — 엔진 state와 별개
+function dispState(r) { return r.display_state || r.state; }
 
 const PLOTLY_LAYOUT_BASE = {
   paper_bgcolor: "#131a26",
@@ -158,7 +160,7 @@ function fmtPct(n, d=1) { return n == null ? "-" : (n >= 0 ? "+" : "") + Number(
 function renderStatus(latest) {
   const el = document.getElementById("statusBar");
   if (!latest) { el.innerHTML = '<span class="muted">데이터 없음</span>'; return; }
-  const state = latest.state || '관망';
+  const state = dispState(latest) || '관망';
   const key = STATE_KEY[state] || 'hold';
   const label = STATE_LABEL[state] || state;
   const rg = latest.rgold != null ? ((latest.rgold - 1) * 100) : null;
@@ -166,7 +168,10 @@ function renderStatus(latest) {
     : (rg <= -5 ? "#4ade80" : (rg >= 20 ? "#ef4444" : "#e6edf3"));
   const rsi = latest.rsi;
   const bullTag = latest.bull_div ? '<span style="color:#22c55e">▲강세div</span>' : '';
-  const changedTag = latest.state_changed
+  const ep = latest.buy_episode;
+  const changedTag = ep
+    ? `<span style="color:#4ade80">📅 ${ep.fired} 발화 ${ep.day}일째 (창 50일 · rGold>-3% 회복 시 종료)</span>`
+    : latest.state_changed
     ? `<span style="color:#a855f7">★ ${latest.state_since} 시작 (1일째)</span>`
     : `<span class="muted">📅 ${latest.state_since || '-'} 부터 (${latest.state_days || 1}일째)</span>`;
 
@@ -208,8 +213,24 @@ function renderPriceChart(rows) {
       hovertemplate: "%{x}<br>매도 · $%{y:,.0f}<extra></extra>",
     },
   ];
+  // 매수 에피소드 창 음영 (발화일~종료일)
+  const epShapes = [];
+  let epStart = null, epLast = null;
+  rows.forEach(r => {
+    const on = dispState(r) === '매수 구간' || r.state === '매수';
+    if (on) { if (!epStart) epStart = r.date; epLast = r.date; }
+    else if (epStart) {
+      epShapes.push({ type: 'rect', xref: 'x', yref: 'paper', x0: epStart, x1: epLast,
+        y0: 0, y1: 1, fillcolor: 'rgba(34,197,94,0.08)', line: { width: 0 } });
+      epStart = null;
+    }
+  });
+  if (epStart) epShapes.push({ type: 'rect', xref: 'x', yref: 'paper', x0: epStart, x1: epLast,
+    y0: 0, y1: 1, fillcolor: 'rgba(34,197,94,0.08)', line: { width: 0 } });
+
   const layout = Object.assign({}, PLOTLY_LAYOUT_BASE, {
     yaxis: Object.assign({}, PLOTLY_LAYOUT_BASE.yaxis, { title: "USD" }),
+    shapes: epShapes,
   });
   Plotly.newPlot("priceChart", traces, layout, PLOTLY_CONFIG);
 }
@@ -318,12 +339,13 @@ function renderDailyTable(rows) {
   if (!rows.length) { el.innerHTML = '<div class="empty">데이터 없음</div>'; return; }
   const html = ['<table><thead><tr><th>날짜</th><th>신호</th><th class="right">XAU/USD</th><th class="right">200일선</th><th class="right">rGold</th><th class="right">RSI</th><th>div</th></tr></thead><tbody>'];
   rows.slice().reverse().slice(0, 60).forEach(r => {
-    const key = STATE_KEY[r.state] || 'hold';
+    const ds = dispState(r);
+    const key = STATE_KEY[ds] || 'hold';
     const rg = r.rgold != null ? (r.rgold - 1) * 100 : null;
     const divTag = r.bull_div ? '<span style="color:#22c55e">▲</span>' : '';
     html.push(`<tr>
       <td>${r.date}</td>
-      <td class="state-cell state-${key}">${r.state}</td>
+      <td class="state-cell state-${key}">${ds}</td>
       <td class="right">${fmtUSD(r.px_usd)}</td>
       <td class="right">${fmtUSD(r.ma200)}</td>
       <td class="right">${fmtPct(rg)}</td>
