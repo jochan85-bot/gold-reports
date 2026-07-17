@@ -2571,5 +2571,24 @@
       "day": 21
     },
     "display_state": "매수 구간"
+  },
+  {
+    "date": "2026-07-16",
+    "timestamp": "2026-07-18 08:30:05 KST",
+    "px_usd": 3985.6,
+    "ma200": 4472.489,
+    "ma20": 4095.71,
+    "rgold": 0.8911,
+    "rsi": 37.8089,
+    "state": "매수",
+    "bull_div": true,
+    "buy": true,
+    "sell": false,
+    "state_since": "2026-07-18",
+    "state_days": 1,
+    "state_changed": true,
+    "retro_alerts": [],
+    "display_state": "매수",
+    "buy_episode": null
   }
 ]
