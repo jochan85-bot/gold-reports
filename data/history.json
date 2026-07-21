@@ -2612,5 +2612,27 @@
       "fired": "2026-07-16",
       "day": 4
     }
+  },
+  {
+    "date": "2026-07-20",
+    "timestamp": "2026-07-22 08:30:05 KST",
+    "px_usd": 4010.3,
+    "ma200": 4474.2955,
+    "ma20": 4067.71,
+    "rgold": 0.8963,
+    "rsi": 39.9731,
+    "state": "관망",
+    "bull_div": false,
+    "buy": false,
+    "sell": false,
+    "state_since": "2026-07-20",
+    "state_days": 3,
+    "state_changed": false,
+    "retro_alerts": [],
+    "display_state": "매수 구간",
+    "buy_episode": {
+      "fired": "2026-07-16",
+      "day": 6
+    }
   }
 ]
