@@ -122,7 +122,9 @@
     </div>
 
     <div class="card">
-      <h2>일일 스냅샷 <span class="muted" style="font-weight:400; font-size:12px;">— 최근 60일</span></h2>
+      <h2>일일 스냅샷
+        <select id="monthSelect" style="margin-left:8px; background:var(--panel); color:var(--text); border:1px solid var(--border); border-radius:6px; padding:3px 8px; font-size:12px; vertical-align:middle;"></select>
+      </h2>
       <div id="dailyTable" class="table-wrap"></div>
     </div>
   </main>
@@ -334,11 +336,43 @@ function renderSignalLog(rows) {
   el.innerHTML = html.join("");
 }
 
+let _monthGroups = new Map();
+
+function monthKey(dateStr) { return (dateStr || '').slice(0, 7); }
+
+function groupByMonth(rows) {
+  const map = new Map();
+  rows.forEach(r => {
+    const k = monthKey(r.date);
+    if (!map.has(k)) map.set(k, []);
+    map.get(k).push(r);
+  });
+  return map;
+}
+
+function renderMonthSelect(rows) {
+  _monthGroups = groupByMonth(rows);
+  const months = Array.from(_monthGroups.keys()).sort().reverse();
+  const sel = document.getElementById("monthSelect");
+  sel.innerHTML = months.map(m => `<option value="${m}">${m} (${_monthGroups.get(m).length}건)</option>`).join("")
+    + `<option value="__all__">전체 (${rows.length}건)</option>`;
+  sel.value = months[0] || "__all__";
+  sel.onchange = () => renderDailyTableForMonth(sel.value);
+  renderDailyTableForMonth(sel.value);
+}
+
+function renderDailyTableForMonth(month) {
+  const rows = month === "__all__"
+    ? Array.from(_monthGroups.values()).flat()
+    : (_monthGroups.get(month) || []);
+  renderDailyTable(rows);
+}
+
 function renderDailyTable(rows) {
   const el = document.getElementById("dailyTable");
   if (!rows.length) { el.innerHTML = '<div class="empty">데이터 없음</div>'; return; }
   const html = ['<table><thead><tr><th>날짜</th><th>신호</th><th class="right">XAU/USD</th><th class="right">200일선</th><th class="right">rGold</th><th class="right">RSI</th><th>div</th></tr></thead><tbody>'];
-  rows.slice().reverse().slice(0, 60).forEach(r => {
+  rows.slice().reverse().forEach(r => {
     const ds = dispState(r);
     const key = STATE_KEY[ds] || 'hold';
     const rg = r.rgold != null ? (r.rgold - 1) * 100 : null;
@@ -377,7 +411,7 @@ async function main() {
     renderPriceChart(history);
     renderRatioRecent(history);
     renderSignalLog(history);
-    renderDailyTable(history);
+    renderMonthSelect(history);
   }
 
   if (signal.length) {
