@@ -1,0 +1,736 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>📖 Gold Signal — 가이드</title>
+<style>
+  :root {
+    --bg: #0b0f17; --panel: #131a26; --border: #1f2a3a;
+    --text: #e6edf3; --muted: #8b97a7;
+    --green: #22c55e; --red: #ef4444; --blue: #3b82f6;
+    --amber: #f59e0b; --purple: #a855f7;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; background: var(--bg); color: var(--text);
+    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Pretendard",
+                 "Apple SD Gothic Neo", Helvetica, Arial, sans-serif;
+    font-size: 15px; line-height: 1.7;
+  }
+  a { color: var(--blue); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+
+  /* ── 헤더 ── */
+  header {
+    padding: 14px 20px; border-bottom: 1px solid var(--border);
+    display: flex; align-items: center; justify-content: space-between; gap: 12px;
+    position: sticky; top: 0; z-index: 100; background: var(--bg);
+  }
+  header h1 { margin: 0; font-size: 16px; font-weight: 600; }
+  header h1 small { color: var(--muted); font-size: 12px; font-weight: 400; margin-left: 8px; }
+  .back-btn {
+    padding: 5px 14px; border-radius: 999px;
+    border: 1px solid var(--border); background: var(--panel);
+    color: var(--muted); font-size: 13px; cursor: pointer;
+    white-space: nowrap; text-decoration: none;
+    transition: border-color .15s, color .15s;
+  }
+  .back-btn:hover { border-color: var(--blue); color: var(--text); text-decoration: none; }
+
+  /* ── 레이아웃 ── */
+  .container {
+    max-width: 800px; margin: 0 auto;
+    padding: 28px 20px 60px;
+  }
+
+  /* ── TOC ── */
+  .toc {
+    background: var(--panel); border: 1px solid var(--border);
+    border-radius: 10px; padding: 16px 20px; margin-bottom: 32px;
+  }
+  .toc-title { font-size: 12px; color: var(--muted); font-weight: 600;
+    text-transform: uppercase; letter-spacing: .06em; margin-bottom: 10px; }
+  .toc-list { display: flex; flex-wrap: wrap; gap: 6px 0; }
+  .toc-list a {
+    display: inline-block; padding: 3px 12px 3px 0;
+    color: var(--blue); font-size: 13px;
+  }
+  .toc-list a::before { content: "·  "; color: var(--border); }
+
+  /* ── 섹션 ── */
+  .section { margin-bottom: 40px; }
+  h2 {
+    font-size: 18px; font-weight: 700; margin: 0 0 4px;
+    padding-bottom: 10px; border-bottom: 1px solid var(--border);
+    scroll-margin-top: 70px;
+  }
+  h2 .section-num { color: var(--muted); font-size: 13px; font-weight: 400; margin-right: 8px; }
+  h3 { font-size: 15px; font-weight: 600; margin: 22px 0 6px; color: var(--amber); }
+  p { margin: 0 0 12px; color: #c8d4df; }
+  ul { margin: 0 0 12px; padding-left: 20px; color: #c8d4df; }
+  li { margin-bottom: 6px; }
+  code {
+    background: rgba(255,255,255,.08); border-radius: 4px;
+    padding: 2px 6px; font-family: "SF Mono", "Fira Code", monospace; font-size: 13px;
+  }
+  .highlight {
+    background: rgba(168,85,247,.1); border-left: 3px solid var(--purple);
+    padding: 10px 14px; border-radius: 4px; margin: 12px 0;
+    font-size: 14px; color: var(--text);
+  }
+  .highlight.green { background: rgba(34,197,94,.1); border-color: var(--green); }
+  .highlight.red   { background: rgba(239,68,68,.1);  border-color: var(--red); }
+  .highlight.amber { background: rgba(245,158,11,.1); border-color: var(--amber); }
+  .highlight.blue  { background: rgba(59,130,246,.1); border-color: var(--blue); }
+
+  /* ── 태그 ── */
+  .tag {
+    display: inline-block; padding: 2px 9px; border-radius: 999px;
+    font-size: 11px; font-weight: 600; vertical-align: middle; margin-right: 6px;
+  }
+  .tag-buy  { background: rgba(34,197,94,.2);  color: #4ade80; }
+  .tag-sell { background: rgba(239,68,68,.2);  color: #fca5a5; }
+  .tag-hold { background: rgba(139,151,167,.2); color: #8b97a7; }
+  .tag-data { background: rgba(59,130,246,.2); color: #93c5fd; }
+
+  /* ── 신호 카드 ── */
+  .signal-card {
+    background: var(--panel); border: 1px solid var(--border);
+    border-radius: 10px; padding: 16px 18px; margin-bottom: 14px;
+  }
+  .signal-card h3 { margin: 0 0 8px; color: var(--text); }
+  .signal-card .cond { font-size: 13px; color: var(--muted); margin-bottom: 8px; }
+  .signal-card ul { margin: 0; }
+
+  /* ── Zone 표 ── */
+  .zone-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+  .zone-table th, .zone-table td {
+    padding: 9px 12px; border-bottom: 1px solid var(--border);
+    text-align: left; vertical-align: top;
+  }
+  .zone-table th { color: var(--muted); font-weight: 500;
+    font-size: 11px; text-transform: uppercase; letter-spacing: .05em; }
+  .zone-table td:first-child { font-weight: 600; white-space: nowrap; }
+
+  /* ── 지표 그리드 ── */
+  .indicator-grid {
+    display: grid; gap: 14px;
+    grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+  }
+  .indicator-card {
+    background: var(--panel); border: 1px solid var(--border);
+    border-radius: 10px; padding: 16px 18px;
+  }
+  .indicator-card h3 { margin: 0 0 6px; font-size: 14px; color: var(--text); }
+  .indicator-card .formula { font-size: 12px; font-family: monospace;
+    color: var(--muted); margin-bottom: 10px; }
+  .indicator-card ul { margin: 0; font-size: 13px; }
+
+  /* ── 매크로 카드 ── */
+  .macro-card {
+    background: var(--panel); border: 1px solid var(--border);
+    border-radius: 10px; padding: 18px 20px; margin-bottom: 16px;
+  }
+  .macro-card h3 { margin: 0 0 6px; font-size: 15px; color: var(--text); }
+  .macro-card .formula { font-size: 12px; font-family: monospace; color: var(--muted); margin-bottom: 10px; }
+  .macro-card .signal-row {
+    display: flex; gap: 10px; align-items: baseline;
+    padding: 8px 12px; border-radius: 6px; margin-bottom: 8px; font-size: 13px;
+  }
+  .macro-card .signal-row.bull { background: rgba(34,197,94,.07); border: 1px solid rgba(34,197,94,.2); }
+  .macro-card .signal-row.bear { background: rgba(239,68,68,.07); border: 1px solid rgba(239,68,68,.2); }
+  .macro-card .signal-row .label { font-weight: 700; white-space: nowrap; min-width: 90px; }
+  .macro-card .signal-row .pts { font-family: monospace; font-weight: 700; white-space: nowrap; }
+  .macro-card .signal-row .pts.pos { color: #4ade80; }
+  .macro-card .signal-row .pts.neg { color: #fca5a5; }
+
+  /* ── 점수 분해 표 ── */
+  .score-breakdown {
+    background: var(--panel); border: 1px solid var(--border);
+    border-radius: 10px; overflow: hidden; margin: 16px 0;
+  }
+  .score-breakdown table { width: 100%; border-collapse: collapse; font-size: 13px; }
+  .score-breakdown th { padding: 8px 12px; color: var(--muted); font-size: 11px;
+    text-transform: uppercase; letter-spacing: .05em; font-weight: 500;
+    border-bottom: 1px solid var(--border); text-align: left; }
+  .score-breakdown td { padding: 8px 12px; border-bottom: 1px solid var(--border); }
+  .score-breakdown tr:last-child td { border-bottom: none; }
+  .score-breakdown .pts-pos { color: #4ade80; font-weight: 600; font-family: monospace; }
+  .score-breakdown .pts-neg { color: #fca5a5; font-weight: 600; font-family: monospace; }
+
+  /* ── FAQ ── */
+  .faq-item { margin-bottom: 20px; }
+  .faq-q { font-weight: 600; color: var(--text); margin-bottom: 6px; }
+  .faq-a { color: #c8d4df; font-size: 14px; }
+
+  /* ── 푸터 ── */
+  footer {
+    border-top: 1px solid var(--border);
+    padding: 20px; text-align: center;
+    color: var(--muted); font-size: 12px;
+  }
+
+  /* ── 모바일 ── */
+  @media (max-width: 600px) {
+    .container { padding: 20px 16px 50px; }
+    .indicator-grid { grid-template-columns: 1fr; }
+    h2 { font-size: 16px; }
+    .zone-table { font-size: 12px; }
+    .zone-table th, .zone-table td { padding: 7px 8px; }
+    .macro-card .signal-row { flex-wrap: wrap; }
+  }
+</style>
+<style>
+  /* ── Gold 추가 ── */
+  .tag-gold    { background: rgba(234,179,8,.2); color: #fde047; }
+  .tag-retired { background: rgba(139,151,167,.15); color: #6b7684; text-decoration: line-through; }
+  .tag-data    { background: rgba(59,130,246,.2); color: #93c5fd; }
+  .changelog { background: var(--panel); border: 1px solid var(--border);
+    border-radius: 10px; overflow: hidden; margin: 16px 0; }
+  .changelog table { width: 100%; border-collapse: collapse; font-size: 13px; }
+  .changelog th { padding: 8px 12px; color: var(--muted); font-size: 11px;
+    text-transform: uppercase; letter-spacing: .05em; font-weight: 500;
+    border-bottom: 1px solid var(--border); text-align: left; }
+  .changelog td { padding: 9px 12px; border-bottom: 1px solid var(--border); vertical-align: top; }
+  .changelog tr:last-child td { border-bottom: none; }
+  .flow { display: flex; flex-wrap: wrap; align-items: center; gap: 8px;
+    font-size: 13px; margin: 12px 0; }
+  .flow .step { background: var(--panel); border: 1px solid var(--border);
+    border-radius: 8px; padding: 8px 12px; }
+  .flow .arrow { color: var(--muted); }
+  .retired-list { display: flex; flex-wrap: wrap; gap: 6px; margin: 10px 0 0; }
+  .retired-list span { font-size: 11px; padding: 3px 9px; border-radius: 999px;
+    background: rgba(139,151,167,.12); color: #6b7684; text-decoration: line-through; }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>📖 Gold 가이드 <small>MacTrader · XAU/USD</small></h1>
+  <a class="back-btn" href="index.html">← 대시보드</a>
+</header>
+
+<div class="container">
+
+  <!-- TOC -->
+  <div class="toc">
+    <div class="toc-title">목차</div>
+    <div class="toc-list">
+      <a href="#overview">시스템 개요</a>
+      <a href="#indicators">지표 3종</a>
+      <a href="#buy">매수 신호</a>
+      <a href="#sell">매도 신호</a>
+      <a href="#episode">매수 에피소드 창</a>
+      <a href="#state">State 판정</a>
+      <a href="#chart">차트 읽기</a>
+      <a href="#data">데이터 · 안전장치</a>
+      <a href="#frozen">파라미터 동결 원칙</a>
+      <a href="#faq">FAQ</a>
+    </div>
+  </div>
+
+  <!-- 1. 개요 -->
+  <div class="section" id="overview">
+    <h2><span class="section-num">01</span>시스템 개요</h2>
+    <p>
+      Gold Signal은 <strong>국제금(XAU/USD) 가격 하나만</strong>으로 매수·매도 국면을 판정하는 시스템입니다.
+      200일선 이격(rGold), 강세 RSI 다이버전스, 20일선 — <strong>지표 3개</strong>가 전부이며
+      실질금리·달러·중앙은행 매입 같은 <strong>동인(driver) 데이터는 쓰지 않습니다</strong>.
+    </p>
+    <ul>
+      <li>매일 <strong>08:30 KST</strong> 자동 실행 (크론) → <code>history.json</code> 자동 push</li>
+      <li>상태는 3가지: <span class="tag tag-buy">매수</span> <span class="tag tag-sell">매도</span> <span class="tag tag-hold">관망</span></li>
+      <li>여기에 표시 전용 오버레이 <span class="tag tag-gold">매수 구간</span>(에피소드 창)이 더해집니다</li>
+      <li>가격 데이터: 2010년~현재 (전체 역사 차트 제공)</li>
+    </ul>
+
+    <div class="highlight blue">
+      <strong>설계 철학 한 줄:</strong> 금은 동인이 복잡한 자산이지만, 그 동인을 다 모델링하려던 시도는
+      전부 폐기됐다. 남은 건 <strong>"싸게 눌렸는가 / 과열됐는가"</strong> 두 질문뿐이다.
+    </div>
+
+    <h3>신호 요약</h3>
+    <div class="score-breakdown">
+      <table>
+        <tr><th>상태</th><th>조건</th><th>액션</th></tr>
+        <tr>
+          <td>🟢 매수</td>
+          <td>강세 RSI 다이버전스 <strong>AND</strong> rGold ≤ −5%</td>
+          <td>분할 진입 검토</td>
+        </tr>
+        <tr>
+          <td>🔴 매도</td>
+          <td>rGold ≥ +20% <strong>AND</strong> 가격 &lt; 20일선</td>
+          <td>신규 투입 중단 / 소량 트림</td>
+        </tr>
+        <tr>
+          <td>⚪ 관망</td>
+          <td>그 외 전부</td>
+          <td>조건 미충족 — 대기</td>
+        </tr>
+      </table>
+    </div>
+
+    <h3>제거 확정 목록</h3>
+    <p style="font-size:13px">
+      아래 요소들은 개발 과정에서 시도됐다가 <strong>모두 제거</strong>됐습니다.
+      현재 시스템에는 존재하지 않으며, 재도입도 동결 원칙(9장)에 따라 금지돼 있습니다.
+    </p>
+    <div class="retired-list">
+      <span>froth 군집</span><span>CAUTION 단계</span><span>BLOWOFF</span>
+      <span>강력·분할 tier</span><span>COT 포지션</span><span>ETF 유출입</span>
+      <span>BofA 서베이</span><span>다우/금 비율</span><span>은(silver) 비율</span>
+      <span>약세 다이버전스</span><span>arm 게이트</span><span>50일선 매도게이트</span>
+      <span>주봉 RSI</span><span>trend_up</span><span>dd90</span>
+      <span>로그스케일·주월봉</span><span>실질금리 레짐</span><span>달러 레짐</span><span>중앙은행 매입</span>
+    </div>
+
+    <div class="highlight amber">
+      ⚠️ <strong>의도적으로 포기한 것:</strong> 2020년식 <strong>중간 천장</strong>(대세 상승 도중의 큰 조정)은
+      이 시스템이 잡지 못합니다. 매도 조건을 그걸 잡을 만큼 느슨하게 하면 정상 상승 구간에서
+      매도가 남발되기 때문에, <strong>알고도 포기한 설계 선택</strong>입니다.
+    </div>
+  </div>
+
+  <!-- 2. 지표 -->
+  <div class="section" id="indicators">
+    <h2><span class="section-num">02</span>지표 3종</h2>
+
+    <div class="indicator-grid">
+      <div class="indicator-card">
+        <h3>① rGold — 200일선 이격</h3>
+        <div class="formula">rGold = 현재가 / 200일 단순이동평균</div>
+        <ul>
+          <li><strong>0.95 이하 (−5%)</strong>: 눌림 — 매수 후보 구간</li>
+          <li><strong>1.00 부근</strong>: 장기 추세선 위 정상</li>
+          <li><strong>1.20 이상 (+20%)</strong>: 과열 — 매도 후보 구간</li>
+        </ul>
+        <div class="highlight" style="margin-top:10px;font-size:13px">
+          금은 장기 우상향 자산이라 <strong>절대 가격</strong>으로는 비싼지 싼지 판단할 수 없습니다.
+          200일선 대비 <strong>상대 위치</strong>가 유일한 기준선입니다.
+        </div>
+      </div>
+
+      <div class="indicator-card">
+        <h3>② 강세 RSI 다이버전스</h3>
+        <div class="formula">가격은 신저가 · RSI는 더 높은 저점 (40일 창)</div>
+        <ul>
+          <li>가격이 최근 <strong>40일 최저가</strong> 부근(+0.1% 이내)</li>
+          <li>그런데 RSI(14)는 같은 창의 최저 RSI보다 <strong>3% 이상 높음</strong></li>
+          <li>= 가격은 더 빠졌는데 <strong>하락 모멘텀은 약해졌다</strong> → 매도 압력 소진 신호</li>
+        </ul>
+        <div class="highlight green" style="margin-top:10px;font-size:13px">
+          매수의 <strong>"상승 전환" 축</strong>. 단순히 싸다는 것만으로는 사지 않고,
+          바닥에서 힘이 빠졌다는 확인을 요구합니다.
+        </div>
+      </div>
+
+      <div class="indicator-card">
+        <h3>③ 20일선 (매도 하락전환 게이트)</h3>
+        <div class="formula">가격 &lt; 20일 단순이동평균</div>
+        <ul>
+          <li>과열(rGold ≥ +20%)만으로는 매도하지 않습니다</li>
+          <li>단기 추세선인 20일선을 <strong>실제로 이탈</strong>해야 발화</li>
+          <li>= 과열 상태로 계속 오르는 구간에서 조기 매도 방지</li>
+        </ul>
+        <div class="highlight red" style="margin-top:10px;font-size:13px">
+          매도의 <strong>"꺾임 확인" 축</strong>. 크립토 시스템의 "30일 고점 −8% 롤오버"와
+          같은 역할을 합니다.
+        </div>
+      </div>
+
+      <div class="indicator-card">
+        <h3>참고 · RSI(14) 계산</h3>
+        <div class="formula">Wilder 방식 — EWM(alpha = 1/14)</div>
+        <ul>
+          <li>상승분·하락분을 각각 지수이동평균</li>
+          <li>RSI = 100 − 100 / (1 + 평균상승 / 평균하락)</li>
+          <li>다이버전스 판정에만 쓰이며, <strong>RSI 절대 수준(30/70)은 조건이 아닙니다</strong></li>
+        </ul>
+        <div class="highlight amber" style="margin-top:10px;font-size:13px">
+          RSI 70이 넘어도 그 자체로는 매도가 아닙니다. 매도는 rGold와 20일선만 봅니다.
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- 3. 매수 -->
+  <div class="section" id="buy">
+    <h2><span class="section-num">03</span>매수 신호</h2>
+
+    <div class="signal-card">
+      <h3><span class="tag tag-buy">▲</span> 매수 (BUY)</h3>
+      <div class="cond">조건: <code>강세 다이버전스 = True</code> <strong>AND</strong> <code>rGold ≤ 0.95</code></div>
+      <div class="flow">
+        <span class="step">과매도<br><span style="font-size:11px;color:var(--muted)">200일선 대비 −5% 이하</span></span>
+        <span class="arrow">+</span>
+        <span class="step">상승 전환 확인<br><span style="font-size:11px;color:var(--muted)">강세 RSI 다이버전스</span></span>
+        <span class="arrow">→</span>
+        <span class="step" style="border-color:var(--green)"><strong>🟢 매수 발화</strong></span>
+      </div>
+      <ul>
+        <li><strong>두 축이 모두 필요합니다.</strong> 싸기만 하고 모멘텀이 계속 죽어 있으면 발화하지 않고,
+          모멘텀이 살아나도 200일선 위라면 발화하지 않습니다.</li>
+        <li>발화일은 하루짜리 이벤트지만, 실전 편의를 위해 <strong>매수 에피소드 창</strong>(5장)이
+          그날부터 최대 50일간 "매수 구간"으로 표시됩니다.</li>
+        <li>액션: <strong>분할 진입 검토</strong> — 한 번에 다 사라는 신호가 아닙니다.</li>
+      </ul>
+    </div>
+
+    <div class="highlight green">
+      <strong>왜 −5%인가?</strong> 더 깊게(−10%, −15%) 잡으면 신호가 거의 나오지 않아 실전에서 쓸 수 없다는
+      판단으로 국제금 기준 −5%가 확정됐습니다. 이 값은 <strong>단발검증(비재현) 지위</strong>이며 동결 대상입니다 (9장 참조).
+    </div>
+
+    <h3>최근 발화 사례 (2026년)</h3>
+    <table class="zone-table">
+      <tr><th>발화일</th><th>rGold</th><th>RSI</th><th>이후</th></tr>
+      <tr><td>06-24</td><td>−10.2%</td><td>29</td><td>매수 구간 진입 → 07-16 재발화로 교체(superseded)</td></tr>
+      <tr><td>07-16</td><td>−10.9%</td><td>38</td><td>매수 구간 유지 → 08-10 rGold −2.6% 회복으로 창 종료</td></tr>
+    </table>
+    <p style="font-size:13px;color:var(--muted)">
+      ※ 창이 활성인 동안 새 매수가 발화하면 기존 에피소드는 <code>superseded</code> 사유로 종료 기록되고
+      새 에피소드로 교체됩니다 (감사 추적을 위해 종료 스냅샷을 남깁니다).
+    </p>
+  </div>
+
+  <!-- 4. 매도 -->
+  <div class="section" id="sell">
+    <h2><span class="section-num">04</span>매도 신호</h2>
+
+    <div class="signal-card">
+      <h3><span class="tag tag-sell">▼</span> 매도 (SELL)</h3>
+      <div class="cond">조건: <code>rGold ≥ 1.20</code> <strong>AND</strong> <code>가격 &lt; 20일선</code></div>
+      <div class="flow">
+        <span class="step">과열<br><span style="font-size:11px;color:var(--muted)">200일선 대비 +20% 이상</span></span>
+        <span class="arrow">+</span>
+        <span class="step">하락 전환<br><span style="font-size:11px;color:var(--muted)">20일선 이탈</span></span>
+        <span class="arrow">→</span>
+        <span class="step" style="border-color:var(--red)"><strong>🔴 매도 발화</strong></span>
+      </div>
+      <ul>
+        <li>매수와 달리 <strong>같은 날 동시 충족</strong>을 요구합니다 (무장창 구조 없음).</li>
+        <li>과열 구간에서 가격이 20일선을 오르내리면 매도 ↔ 관망이 며칠 단위로 반복될 수 있습니다.
+          이는 버그가 아니라 <strong>게이트 구조의 정직한 결과</strong>입니다 (아래 표 참조).</li>
+        <li>액션: <strong>신규 투입 중단 / 소량 트림 검토</strong> — 전량 청산 신호가 아닙니다.</li>
+      </ul>
+    </div>
+
+    <h3>매도 발화 이력 (2025-10 ~ 2026-03)</h3>
+    <table class="zone-table">
+      <tr><th>기간</th><th>발화</th><th>그때 rGold</th></tr>
+      <tr><td>2025-10</td><td>10-27, 10-30</td><td>+21.0% · +20.2%</td></tr>
+      <tr><td>2026-01~02</td><td>01-30, 02-12, 02-17, 02-19</td><td>+25.0% ~ +28.3%</td></tr>
+      <tr><td>2026-03</td><td>03-05, 03-13</td><td>+27.5% · +25.5%</td></tr>
+    </table>
+    <div class="highlight amber">
+      ⚠️ 위 표에서 보이듯 매도는 <strong>한 번에 끝나지 않고 며칠~몇 주 간격으로 반복 발화</strong>합니다.
+      과열이 유지되는 동안 가격이 20일선을 계속 오르내리기 때문입니다.
+      "매도가 여러 번 떴다"를 <strong>여러 번 팔라는 뜻으로 읽지 마세요</strong> —
+      같은 과열 국면의 반복 확인으로 보는 것이 맞습니다.
+      (크립토 시스템과 달리 금 쪽에는 에피소드 그룹화가 <strong>매수에만</strong> 있습니다)
+    </div>
+  </div>
+
+  <!-- 5. 에피소드 -->
+  <div class="section" id="episode">
+    <h2><span class="section-num">05</span>매수 에피소드 창 (표시 레이어)</h2>
+    <p>
+      엔진의 매수 신호는 <strong>하루짜리 이벤트</strong>입니다. 그런데 실전에서는
+      "어제 매수가 떴는데 오늘 사도 되나?"가 늘 문제입니다. 그래서 발화일부터 일정 기간을
+      <strong>매수 구간</strong>으로 표시하는 오버레이를 얹었습니다.
+    </p>
+
+    <div class="highlight green">
+      <strong>창 종료 조건 — 둘 중 먼저 오는 쪽</strong><br>
+      ① 발화 후 <strong>50일 경과</strong><br>
+      ② rGold가 <strong>−3% 위로 회복</strong> (<code>rgold &gt; 0.97</code>)
+    </div>
+
+    <ul>
+      <li>창이 활성인 동안 상태 바에 <span style="color:#4ade80">📅 발화일 · N일째</span>가 표시되고,
+        가격 차트에 <span style="color:#4ade80">초록 음영</span>이 깔립니다.</li>
+      <li>엔진 STATE는 여전히 <code>관망</code>입니다 — 창은 <strong>표시 레이어일 뿐 신호 로직을 바꾸지 않습니다</strong>.
+        <code>history.json</code>에서 <code>state</code>와 <code>display_state</code>가 분리 기록됩니다.</li>
+      <li><strong>매도가 우선</strong>합니다. 창이 활성이어도 매도 조건이 충족되면 매도로 표시됩니다.</li>
+      <li>종료 사유(<code>50일 경과</code> / <code>rGold&gt;-3% 회복</code> / <code>superseded</code>)는
+        <code>episode_history</code>에 스냅샷으로 남습니다.</li>
+    </ul>
+
+    <div class="highlight blue">
+      <strong>실제 사례:</strong> 2026-07-16 발화 → 매수 구간 유지 → <strong>2026-08-10</strong>에
+      rGold가 −2.6%까지 회복(&gt; −3%)해 <strong>25일 만에 창 종료</strong>. 50일을 다 채우지 않고 끝난 경우입니다.
+      "싸서 샀는데 이제 안 싸다"는 뜻이지, 매도 신호가 아닙니다.
+    </div>
+  </div>
+  <!-- 6. State -->
+  <div class="section" id="state">
+    <h2><span class="section-num">06</span>State 판정</h2>
+    <table class="zone-table">
+      <tr><th>표시</th><th>조건</th><th>의미</th></tr>
+      <tr><td>🟢 매수</td><td>다이버전스 + rGold ≤ −5% (발화 당일)</td><td>과매도 + 상승전환 확인</td></tr>
+      <tr><td>🟢 매수 구간</td><td>매수 발화 후 창 활성 (표시 오버레이)</td><td>분할 진입 유효 구간</td></tr>
+      <tr><td>🔴 매도</td><td>rGold ≥ +20% + 20일선 이탈</td><td>과열 + 하락전환</td></tr>
+      <tr><td>⚪ 관망</td><td>그 외</td><td>조건 미충족 — 대기</td></tr>
+    </table>
+    <div class="highlight">
+      <strong>우선순위: 매도 &gt; 매수 &gt; 매수 구간 &gt; 관망.</strong>
+      엔진 STATE는 매수/매도/관망 3개뿐이고, "매수 구간"은 관망 위에만 덧씌워집니다.
+    </div>
+
+    <h3>최근 상태 흐름 (발행 리포트 기준)</h3>
+    <table class="zone-table">
+      <tr><th>날짜</th><th>전환</th><th>rGold</th></tr>
+      <tr><td>2025-10-27 ~ 10-31</td><td>🔴 매도 ↔ ⚪ 관망 반복</td><td>+19% ~ +21%</td></tr>
+      <tr><td>2026-01-30 ~ 03-13</td><td>🔴 매도 6회 발화 (간헐)</td><td>+25% ~ +28%</td></tr>
+      <tr><td>2026-03-19</td><td>⚪ 관망 복귀</td><td>+13.4%</td></tr>
+      <tr><td>2026-06-24</td><td>⚪ → 🟢 매수</td><td>−10.2%</td></tr>
+      <tr><td>2026-07-16</td><td>🟢 매수 재발화 (창 교체)</td><td>−10.9%</td></tr>
+      <tr><td>2026-08-10</td><td>🟢 매수 구간 → ⚪ 관망</td><td>−2.6% (회복 종료)</td></tr>
+      <tr><td>2026-08-26 (현재)</td><td>⚪ 관망</td><td>+2.0% · RSI 69</td></tr>
+    </table>
+  </div>
+
+  <!-- 7. 차트 -->
+  <div class="section" id="chart">
+    <h2><span class="section-num">07</span>차트 읽기</h2>
+
+    <h3>상태 바 (상단)</h3>
+    <ul>
+      <li><strong>상태 필</strong>: 🟢 매수 / 🟢 매수 구간 / 🔴 매도 / ⚪ 관망</li>
+      <li><strong>XAU/USD</strong>: 마지막 확정봉 종가</li>
+      <li><strong>200일선</strong>: rGold를 % 로 표시. −5% 이하면 초록, +20% 이상이면 빨강</li>
+      <li><strong>RSI</strong>: 14일 RSI (참고 표시 — 조건 아님)</li>
+      <li><span style="color:#22c55e">▲강세div</span>: 그날 다이버전스 성립 시에만 표시</li>
+      <li>우측: 매수 구간이면 발화일·경과일, 아니면 현재 상태 시작일·지속일</li>
+    </ul>
+
+    <h3>① 가격 · 신호 이벤트 (상단)</h3>
+    <ul>
+      <li><span style="color:#eab308">노란 선</span> = XAU/USD</li>
+      <li><span style="color:#8b97a7">회색 점선</span> = 200일선 · <span style="color:#38bdf8">파란 파선</span> = 20일선</li>
+      <li><span style="color:#22c55e">▲ 초록 삼각</span> = 매수 발화 · <span style="color:#ef4444">▼ 빨간 역삼각</span> = 매도 발화</li>
+      <li><span style="color:#4ade80">초록 음영</span> = 매수 에피소드 창 (진입 유효 구간)</li>
+    </ul>
+
+    <h3>② rGold · RSI 차트 (가격 차트 연동)</h3>
+    <ul>
+      <li><span style="color:#22c55e">초록 선</span> = rGold % (좌축) · <span style="color:#a855f7">보라 선</span> = RSI (우축)</li>
+      <li><span style="color:#4ade80">−5% 파선</span> = 매수 문턱 · <span style="color:#ef4444">+20% 파선</span> = 매도 문턱</li>
+      <li><span style="color:#8b97a7">0% 점선</span> = 200일선 자체 (금이 장기 추세선 위인지 아래인지)</li>
+    </ul>
+
+    <h3>③ 전체 역사 차트 (2010~)</h3>
+    <ul>
+      <li>16년치 전 구간에서 이 규칙이 언제 발화했는지 한눈에 확인할 수 있습니다</li>
+      <li>연속 발화는 <strong>첫날에만</strong> 마커가 찍힙니다 (마커 뭉침 방지)</li>
+      <li>2011년 고점, 2013년 붕괴, 2015년 바닥, 2020년 랠리 구간에서 규칙이 어떻게 동작했는지 직접 대조해 보세요</li>
+    </ul>
+
+    <h3>④ 시그널 로그 · 일일 스냅샷</h3>
+    <p style="font-size:13px">
+      시그널 로그는 <strong>상태 변경일만</strong> 추립니다. 일일 스냅샷은 월 선택 드롭다운으로
+      과거를 조회할 수 있으며, 그날 발행된 값 그대로이고 사후 수정하지 않습니다 (9장 정본 원칙).
+    </p>
+  </div>
+
+  <!-- 8. 데이터 -->
+  <div class="section" id="data">
+    <h2><span class="section-num">08</span>데이터 · 안전장치</h2>
+
+    <div class="score-breakdown">
+      <table>
+        <tr><th>데이터</th><th>소스</th><th>비고</th></tr>
+        <tr><td>금 가격</td><td>yfinance <code>GC=F</code> (COMEX 금 선물 연속물)</td><td>2010-01-01 ~ 현재</td></tr>
+        <tr><td>200일선 · 20일선 · RSI</td><td>위 가격에서 자체 계산</td><td>외부 의존 없음</td></tr>
+        <tr><td>USD/KRW 환율 <span class="tag tag-data">관찰용</span></td><td>yfinance <code>USDKRW=X</code></td><td>김치 프리미엄 환산용</td></tr>
+        <tr><td>국내 금 시세 <span class="tag tag-data">관찰용</span></td><td>네이버 금융 금시세 (KRW/g)</td><td>김치 프리미엄 계산용</td></tr>
+      </table>
+    </div>
+    <p style="font-size:13px;color:var(--muted)">
+      ※ 사이트 표기는 <strong>XAU/USD</strong>지만 실제 데이터 소스는 COMEX 금 선물(<code>GC=F</code>)입니다.
+      현물과 선물은 보관비용·금리만큼 미세한 차이가 있으나, 이 시스템은 <strong>200일선 대비 비율</strong>만 쓰므로
+      판정에 실질적 영향은 없습니다.
+    </p>
+
+    <h3>🛡️ 안전장치</h3>
+    <ul>
+      <li>
+        <strong>확정봉 사용 (핵심)</strong>: 판정은 항상 <strong>마지막에서 두 번째 봉</strong>(<code>iloc[-2]</code>)
+        으로 합니다. 마지막 봉은 아직 장중 진행 중일 수 있어 종가가 확정되지 않았기 때문입니다.
+        그 대가로 판정이 <strong>실제보다 1~3일 늦습니다</strong>.
+        이는 잠정봉 오염 방지를 위한 <strong>의도된 보수성</strong>이며 2026-07-28 유지 확정됐습니다.
+      </li>
+      <li>
+        <strong>놓친 신호 소급 알림</strong>: 마지막으로 확인한 봉 이후 새로 확정된 봉 중
+        매수 발화가 있으면 <strong>소급 탐지해 알립니다</strong>
+        (형식: <code>🟢 매수 (소급) — 발화 7/16 $3,986 (rGold −10.9%) → 현재 $4,010 (rGold −10.4%), 4일 경과</code>)
+        서버가 며칠 멈춰 있었어도 신호가 증발하지 않습니다.
+        첫 실행·배포 공백 시에는 최근 <strong>30일</strong>을 스캔합니다.
+      </li>
+      <li>
+        <strong>가격 신선도 가드</strong>: 마지막 확정봉이 직전 거래일 대비 <strong>3거래일 이상</strong>
+        뒤처지면 리포트 최상단에 경고를 붙이고 <code>stale_data_log.jsonl</code>에 영구 기록합니다.
+        (판정 로직 자체는 바꾸지 않습니다 — 표시·기록 전용)
+      </li>
+      <li>
+        <strong>김치 프리미엄</strong>: 네이버 국내 금시세(KRW/g)와 국제금 환산가
+        (<code>XAU × USD/KRW ÷ 31.1035</code>)를 비교해 매일 기록합니다.
+        <strong>관찰용이며 판정에 개입하지 않습니다.</strong>
+      </li>
+    </ul>
+
+    <div class="highlight blue">
+      리포트 생성: 매일 <strong>08:30 KST</strong> · <code>history.json</code> 자동 push ·
+      전체 역사 차트는 <code>v3_signal.json</code> (2010~ 전 구간 재계산본) 사용
+    </div>
+  </div>
+  <!-- 9. 동결 -->
+  <div class="section" id="frozen">
+    <h2><span class="section-num">09</span>파라미터 동결 원칙</h2>
+    <p>
+      2026-07-27/28 운영감사에서, 라이브 경로(<code>run_daily.py</code> → <code>gold_signal_system.py</code>)의
+      <strong>모든 수치 상수</strong>에 대해 저장소 전체를 검색한 결과
+      <strong>재현 가능한 스윕 스크립트가 하나도 발견되지 않았습니다</strong>.
+      따라서 이 시스템의 파라미터는 <strong>"단발검증(비재현)" 또는 "임의값"</strong>으로 재분류됐습니다.
+    </p>
+
+    <div class="score-breakdown">
+      <table>
+        <tr><th>값</th><th>파라미터</th><th>지위</th></tr>
+        <tr><td>−5%</td><td>매수 눌림 임계 (BUY_RGOLD 0.95)</td><td>단발검증 (비재현)</td></tr>
+        <tr><td>+20%</td><td>매도 과열 임계 (SELL_RGOLD 1.20)</td><td>단발검증 (비재현)</td></tr>
+        <tr><td>200일</td><td>기준 이동평균 (MA)</td><td>단발검증 (비재현)</td></tr>
+        <tr><td>20일</td><td>매도 하락전환 게이트 (MA_TURN)</td><td>단발검증 (비재현)</td></tr>
+        <tr><td>14</td><td>RSI 기간 (RSI_N)</td><td>단발검증 (비재현)</td></tr>
+        <tr><td>40일</td><td>다이버전스 탐지창 (DIV_WIN)</td><td>단발검증 (비재현)</td></tr>
+        <tr><td>50일</td><td>매수 에피소드 만료 (표시 레이어)</td><td>단발검증 (비재현)</td></tr>
+        <tr><td>−3%</td><td>에피소드 종료 회복선</td><td>단발검증 (비재현)</td></tr>
+        <tr><td>30일</td><td>소급 스캔 범위</td><td>임의값</td></tr>
+        <tr><td>3거래일</td><td>가격 신선도 가드 임계</td><td>임의 동결값</td></tr>
+      </table>
+    </div>
+
+    <div class="highlight red">
+      <strong>원칙 ① 전 수치 동결.</strong> 스윕·재조정 금지. 재검증이 필요하면
+      2026-07-28 이후 <strong>라이브로 축적되는 실측 데이터(섀도 트래킹)</strong>만을 근거로 합니다.
+      과거 구간에 대한 사후 최적화 재실행은 금지입니다.
+    </div>
+    <div class="highlight red">
+      <strong>원칙 ② 정본 = 발행된 리포트.</strong> 당시 판정의 정본은 이 사이트에 발행된 값입니다.
+      상태 파일(<code>state_track.json</code>, <code>signal_history.parquet</code> 등)의
+      스크립트 직접 수정은 금지이며, 부득이한 마이그레이션 시 수정 전 사본 + 수정 로그가 필수입니다.
+    </div>
+    <p style="font-size:13px;color:var(--muted)">
+      전체 대장은 저장소의 <code>FROZEN_PARAMS.md</code>를 참조하세요.
+      미해결 관찰 항목(<code>buy_episode</code> 필드의 소급 존재 경위, 확정봉 랙 분포 등)도 그 문서에 기록돼 있습니다.
+    </p>
+  </div>
+
+  <!-- 10. FAQ -->
+  <div class="section" id="faq">
+    <h2><span class="section-num">10</span>FAQ</h2>
+
+    <div class="faq-item">
+      <div class="faq-q">Q. 실질금리·달러·중앙은행 매입은 왜 안 보나요?</div>
+      <div class="faq-a">
+        전부 시도했다가 <strong>폐기</strong>했습니다. 동인 레짐(driver regime)을 붙였을 때
+        신호가 개선되지 않았고, 데이터 의존성과 실패 지점만 늘었습니다.
+        지금은 <strong>가격 하나</strong>만 봅니다 — 외부 API가 죽어도 판정은 계속됩니다.
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-q">Q. 어제 종가로 판정하는 이유는? (하루 늦지 않나요?)</div>
+      <div class="faq-a">
+        맞습니다. 마지막 봉은 장중 진행 중일 수 있어 <strong>종가가 확정되지 않았기</strong> 때문에
+        직전 확정봉으로 판정합니다. 그 결과 실제보다 <strong>1~3일 늦게</strong> 신호가 뜹니다.
+        "잠정 종가로 잘못 발화하는 것"보다 "확정 종가로 조금 늦게 발화하는 것"이 낫다는
+        판단으로 2026-07-28에 유지 확정됐습니다. 늦게 뜬 신호는 <strong>소급 알림</strong>으로 보완합니다.
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-q">Q. "매수"와 "매수 구간"의 차이는?</div>
+      <div class="faq-a">
+        <strong>매수</strong>는 조건이 실제로 충족된 <strong>발화 당일</strong>입니다.
+        <strong>매수 구간</strong>은 그 뒤 최대 50일간(또는 rGold가 −3% 위로 회복할 때까지)
+        "아직 진입해도 유효하다"를 알려주는 <strong>표시 오버레이</strong>입니다.
+        엔진 내부 상태는 매수 구간 동안 <code>관망</code>입니다 — 신호 로직은 전혀 바뀌지 않습니다.
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-q">Q. 매도가 한 달 새 4번 떴는데 4번 팔아야 하나요?</div>
+      <div class="faq-a">
+        아닙니다. 금 시스템에는 <strong>에피소드 그룹화가 매수에만</strong> 있어서,
+        과열 구간에서 가격이 20일선을 오르내리면 매도가 반복 표시됩니다.
+        같은 과열 국면의 반복 확인으로 읽으세요.
+        액션도 "전량 청산"이 아니라 <strong>신규 투입 중단 / 소량 트림</strong>입니다.
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-q">Q. RSI가 70을 넘었는데 왜 매도가 아닌가요?</div>
+      <div class="faq-a">
+        RSI 절대 수준은 <strong>어떤 조건에도 쓰이지 않습니다</strong>.
+        RSI는 오직 <strong>강세 다이버전스 판정</strong>(가격 신저가 대비 RSI 저점 비교)에만 쓰입니다.
+        매도 조건은 rGold ≥ +20%와 20일선 이탈 두 개뿐입니다.
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-q">Q. 2020년 같은 큰 조정은 잡히나요?</div>
+      <div class="faq-a">
+        <strong>잡히지 않습니다.</strong> 대세 상승 도중의 중간 천장은 rGold가 +20%에 닿지 않은 채
+        꺾이는 경우가 많습니다. 이걸 잡으려고 문턱을 낮추면 정상 상승 구간에서 매도가 남발돼
+        시스템 전체가 못 쓰게 됩니다. <strong>알고도 포기한 설계 선택</strong>입니다.
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-q">Q. 관망인데 금이 계속 오르고 있어요.</div>
+      <div class="faq-a">
+        정상입니다. 관망은 "지금 사기에 충분히 눌리지도, 팔기에 충분히 과열되지도 않았다"는 뜻이지
+        <strong>가격 방향 예측이 아닙니다</strong>. 이 시스템은 추세 추종이 아니라
+        <strong>극단 구간 포착</strong>용입니다.
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-q">Q. 김치 프리미엄은 신호에 반영되나요?</div>
+      <div class="faq-a">
+        아닙니다. <strong>관찰용 기록</strong>입니다. 국내에서 실제 금을 매매할 때
+        국제 시세 대비 얼마나 비싸게 사는지 참고하라는 정보일 뿐, 매수·매도 판정에는 개입하지 않습니다.
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-q">Q. 임계값을 조정하면 더 좋아지지 않을까요?</div>
+      <div class="faq-a">
+        <strong>금지돼 있습니다.</strong> 2026-07-28부로 전 파라미터가 동결됐고, 과거 구간 사후 스윕도 금지입니다.
+        재검증은 동결 시점 이후 라이브로 쌓이는 실측 데이터로만 합니다.
+        지금 값들이 최적이라서가 아니라, <strong>사후 최적화가 만들어내는 착시를 차단</strong>하기 위한 규칙입니다.
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-q">Q. 크립토 시그널과 뭐가 다른가요?</div>
+      <div class="faq-a">
+        크립토는 온체인 4종의 <strong>역대 백분위</strong>로 사이클 위치를 재고, 매크로 게이트와
+        60일 에피소드 구조를 씁니다. 금은 <strong>가격 3지표</strong>만 쓰는 훨씬 단순한 규칙이고,
+        에피소드 창도 매수에만 있습니다. 공통점은 <strong>둘 다 "싸게 사는 구간"을 찾을 뿐
+        바닥을 맞히려 하지 않는다</strong>는 점, 그리고 <strong>파라미터 동결 원칙</strong>을 공유한다는 점입니다.
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<footer>
+  MacTrader · Gold Signal (XAU/USD) — 매일 08:30 KST 자동 갱신 ·
+  <a href="index.html">대시보드로 돌아가기</a>
+</footer>
+
+</body>
+</html>

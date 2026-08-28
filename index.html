@@ -38,6 +38,16 @@
   h1 small { color: var(--muted); font-weight: 400; margin-left: 5px;
     font-size: 10px; display: none; }
   @media (min-width: 500px) { h1 small { display: inline; font-size: 11px; } }
+  .guide-btn {
+    display: inline-flex; align-items: center; gap: 4px;
+    padding: 5px 12px; border-radius: 7px; flex-shrink: 0;
+    border: 1px solid rgba(59,130,246,.5);
+    background: rgba(59,130,246,.13);
+    color: #93c5fd !important; font-size: 13px; font-weight: 500;
+    white-space: nowrap; text-decoration: none !important;
+    transition: background .15s, border-color .15s;
+  }
+  .guide-btn:hover { background: rgba(59,130,246,.25); border-color: #3b82f6; color: #bfdbfe !important; }
   .header-status {
     display: flex; gap: 6px 12px; align-items: center; flex-wrap: wrap;
     font-size: 12px; line-height: 1.6;
@@ -88,6 +98,7 @@
   <header>
     <div class="header-top">
       <h1>🪙 Gold Signal · XAU/USD <small>rGold + 강세 다이버전스 + 20일선 · 최종 확정본</small></h1>
+      <a class="guide-btn" href="guide.html" target="_blank" rel="noopener">📖 Guide</a>
     </div>
     <div class="header-status">
       <div class="status" id="statusBar"><span class="muted">데이터 로드 중…</span></div>
