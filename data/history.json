@@ -3277,5 +3277,26 @@
     "stale_lag_trading_days": 0,
     "display_state": "관망",
     "buy_episode": null
+  },
+  {
+    "date": "2026-08-31",
+    "timestamp": "2026-09-02 08:30:11 KST",
+    "px_usd": 4431.1,
+    "ma200": 4515.0205,
+    "ma20": 4431.56,
+    "rgold": 0.9814,
+    "rsi": 53.1412,
+    "state": "관망",
+    "bull_div": false,
+    "buy": false,
+    "sell": false,
+    "state_since": "2026-07-20",
+    "state_days": 45,
+    "state_changed": false,
+    "kimchi_premium_pct": 3.486,
+    "retro_alerts": [],
+    "stale_lag_trading_days": 1,
+    "display_state": "관망",
+    "buy_episode": null
   }
 ]
