@@ -446,10 +446,90 @@ function bindChartSync(ids) {
   }
 }
 
-// ─── 핀치줌: Plotly 자체 scrollZoom 기능 사용 (커스텀 핸들러는 Plotly 내부
-// 드래그 레이어와 경쟁해 오작동했음) — 아래 gesturestart 등은 구형 Safari의
-// 네이티브 페이지 확대(더블탭/제스처줌)만 차단, 핀치 자체는 Plotly가 처리.
+// ─── 핀치줌 ─────────────────────────────────────────────────────────────────
+// Plotly의 scrollZoom은 'wheel' 이벤트(마우스/트랙패드)만 처리하고 실제 터치
+// 핀치는 지원하지 않는다 — Plotly 자체 드래그 레이어(dragElement)는 터치를
+// e.changedTouches[0] 하나만 읽는 단일 포인터로 취급해 두 손가락도 "한 손가락
+// 드래그"처럼 동작한다 (plotly.js 소스 확인). 그래서 차트 영역의 touchstart를
+// 캡처 단계에서 항상 stopPropagation 해 Plotly 자체 드래그가 아예 시작되지
+// 않게 막고(1손가락은 preventDefault 안 해서 페이지 세로 스크롤은 그대로 통과),
+// 2손가락 핀치만 우리가 직접 구현한다.
+const _pinchState = { chartId: null, startDist: 0, startMidData: 0, startRange: null };
 const _CHART_IDS = ["priceChart", "ratioChartRecent", "priceChartFull", "ratioChartFull"];
+function _getChartInfo(chartId, clientX) {
+  const gd = document.getElementById(chartId);
+  if (!gd || !gd._fullLayout) return null;
+  const xaxis = gd._fullLayout.xaxis;
+  if (!xaxis || !xaxis._length) return null;
+  const bb = gd.getBoundingClientRect();
+  const pxInPlot = clientX - bb.left - xaxis._offset;
+  return {
+    pxToData: (px) => { const v = xaxis.p2d(px); return typeof v === "number" ? v : new Date(v).getTime(); },
+    pxInPlot,
+    range: xaxis.range.map(v => typeof v === "number" ? v : new Date(v).getTime()),
+  };
+}
+function _findChartUnderTouch(t0, t1) {
+  const midX = (t0.clientX + t1.clientX) / 2, midY = (t0.clientY + t1.clientY) / 2;
+  for (const id of _CHART_IDS) {
+    const el = document.getElementById(id);
+    if (!el) continue;
+    const bb = el.getBoundingClientRect();
+    if (midX >= bb.left && midX <= bb.right && midY >= bb.top && midY <= bb.bottom) return id;
+  }
+  return null;
+}
+function _isInsideChart(e) {
+  return _CHART_IDS.some(id => { const el = document.getElementById(id); return el && el.contains(e.target); });
+}
+let _pinchFrame = null;
+let _pinchLatest = null;
+function _applyPinch() {
+  _pinchFrame = null;
+  if (!_pinchLatest || !_pinchState.startRange) return;
+  const { t0, t1 } = _pinchLatest;
+  const dist = Math.hypot(t0.clientX - t1.clientX, t0.clientY - t1.clientY);
+  if (dist < 10 || _pinchState.startDist < 10) return;
+  const scale = _pinchState.startDist / dist;
+  const [r0, r1] = _pinchState.startRange;
+  const span = r1 - r0;
+  const newSpan = Math.max(span * scale, 86400000);
+  const leftFrac = (_pinchState.startMidData - r0) / span;
+  const newR0 = _pinchState.startMidData - leftFrac * newSpan;
+  Plotly.relayout(_pinchState.chartId, {
+    "xaxis.range[0]": new Date(newR0).toISOString(),
+    "xaxis.range[1]": new Date(newR0 + newSpan).toISOString(),
+    "xaxis.autorange": false,
+  });
+}
+document.addEventListener("touchstart", e => {
+  if (!_isInsideChart(e)) return;
+  e.stopPropagation();  // Plotly 자체 dragElement.onStart가 아예 실행되지 않게 차단
+  if (e.touches.length !== 2) return;
+  const t0 = e.touches[0], t1 = e.touches[1];
+  const chartId = _findChartUnderTouch(t0, t1);
+  if (!chartId) return;
+  const info = _getChartInfo(chartId, (t0.clientX + t1.clientX) / 2);
+  if (!info) return;
+  _pinchState.chartId = chartId;
+  _pinchState.startDist = Math.hypot(t0.clientX - t1.clientX, t0.clientY - t1.clientY);
+  _pinchState.startMidData = info.pxToData(info.pxInPlot);
+  _pinchState.startRange = info.range;
+  e.preventDefault();
+}, { passive: false, capture: true });
+document.addEventListener("touchmove", e => {
+  if (!_isInsideChart(e) || e.touches.length !== 2 || !_pinchState.startRange) return;
+  e.preventDefault();
+  e.stopPropagation();
+  _pinchLatest = { t0: e.touches[0], t1: e.touches[1] };
+  if (_pinchFrame == null) _pinchFrame = requestAnimationFrame(_applyPinch);
+}, { passive: false, capture: true });
+document.addEventListener("touchend", e => {
+  if (e.touches.length < 2) {
+    _pinchState.chartId = null; _pinchState.startRange = null; _pinchLatest = null;
+    if (_pinchFrame != null) { cancelAnimationFrame(_pinchFrame); _pinchFrame = null; }
+  }
+}, { capture: true });
 for (const id of _CHART_IDS) {
   const el = document.getElementById(id);
   if (!el) continue;
