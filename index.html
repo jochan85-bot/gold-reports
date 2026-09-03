@@ -475,22 +475,12 @@ function _findChartUnderTouch(t0, t1) {
 function _isInsideChart(e) {
   return _CHART_IDS.some(id => { const el = document.getElementById(id); return el && el.contains(e.target); });
 }
-document.addEventListener("touchstart", e => {
-  if (!_isInsideChart(e) || e.touches.length !== 2) return;
-  const t0 = e.touches[0], t1 = e.touches[1];
-  const chartId = _findChartUnderTouch(t0, t1);
-  if (!chartId) return;
-  const info = _getChartInfo(chartId, (t0.clientX + t1.clientX) / 2);
-  if (!info) return;
-  _pinchState.chartId = chartId;
-  _pinchState.startDist = Math.hypot(t0.clientX - t1.clientX, t0.clientY - t1.clientY);
-  _pinchState.startMidData = info.pxToData(info.pxInPlot);
-  _pinchState.startRange = info.range;
-  e.preventDefault();
-}, { passive: false, capture: true });
-document.addEventListener("touchmove", e => {
-  if (!_isInsideChart(e) || e.touches.length !== 2 || !_pinchState.startRange) return;
-  const t0 = e.touches[0], t1 = e.touches[1];
+let _pinchFrame = null;
+let _pinchLatest = null;
+function _applyPinch() {
+  _pinchFrame = null;
+  if (!_pinchLatest || !_pinchState.startRange) return;
+  const { t0, t1 } = _pinchLatest;
   const dist = Math.hypot(t0.clientX - t1.clientX, t0.clientY - t1.clientY);
   if (dist < 10 || _pinchState.startDist < 10) return;
   const scale = _pinchState.startDist / dist;
@@ -504,10 +494,33 @@ document.addEventListener("touchmove", e => {
     "xaxis.range[1]": new Date(newR0 + newSpan).toISOString(),
     "xaxis.autorange": false,
   });
+}
+document.addEventListener("touchstart", e => {
+  if (!_isInsideChart(e) || e.touches.length !== 2) return;
+  const t0 = e.touches[0], t1 = e.touches[1];
+  const chartId = _findChartUnderTouch(t0, t1);
+  if (!chartId) return;
+  const info = _getChartInfo(chartId, (t0.clientX + t1.clientX) / 2);
+  if (!info) return;
+  _pinchState.chartId = chartId;
+  _pinchState.startDist = Math.hypot(t0.clientX - t1.clientX, t0.clientY - t1.clientY);
+  _pinchState.startMidData = info.pxToData(info.pxInPlot);
+  _pinchState.startRange = info.range;
   e.preventDefault();
+  e.stopPropagation();
+}, { passive: false, capture: true });
+document.addEventListener("touchmove", e => {
+  if (!_isInsideChart(e) || e.touches.length !== 2 || !_pinchState.startRange) return;
+  e.preventDefault();
+  e.stopPropagation();
+  _pinchLatest = { t0: e.touches[0], t1: e.touches[1] };
+  if (_pinchFrame == null) _pinchFrame = requestAnimationFrame(_applyPinch);
 }, { passive: false, capture: true });
 document.addEventListener("touchend", e => {
-  if (e.touches.length < 2) { _pinchState.chartId = null; _pinchState.startRange = null; }
+  if (e.touches.length < 2) {
+    _pinchState.chartId = null; _pinchState.startRange = null; _pinchLatest = null;
+    if (_pinchFrame != null) { cancelAnimationFrame(_pinchFrame); _pinchFrame = null; }
+  }
 }, { capture: true });
 for (const id of _CHART_IDS) {
   const el = document.getElementById(id);
