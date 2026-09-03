@@ -183,7 +183,7 @@ const PLOTLY_LAYOUT_BASE = {
   yaxis: { gridcolor: "#1f2a3a", zerolinecolor: "#1f2a3a" },
   legend: { orientation: "h", y: -0.15 },
 };
-const PLOTLY_CONFIG = { responsive: true, displayModeBar: false, scrollZoom: false };
+const PLOTLY_CONFIG = { responsive: true, displayModeBar: false, scrollZoom: true };
 
 function fmtUSD(n)      { return n == null ? "-" : "$" + Number(n).toLocaleString('en-US', { maximumFractionDigits: 0 }); }
 function fmtPct(n, d=1) { return n == null ? "-" : (n >= 0 ? "+" : "") + Number(n).toFixed(d) + "%"; }
@@ -446,82 +446,10 @@ function bindChartSync(ids) {
   }
 }
 
-// ─── 핀치줌 ─────────────────────────────────────────────────────────────────
-const _pinchState = { chartId: null, startDist: 0, startMidData: 0, startRange: null };
+// ─── 핀치줌: Plotly 자체 scrollZoom 기능 사용 (커스텀 핸들러는 Plotly 내부
+// 드래그 레이어와 경쟁해 오작동했음) — 아래 gesturestart 등은 구형 Safari의
+// 네이티브 페이지 확대(더블탭/제스처줌)만 차단, 핀치 자체는 Plotly가 처리.
 const _CHART_IDS = ["priceChart", "ratioChartRecent", "priceChartFull", "ratioChartFull"];
-function _getChartInfo(chartId, clientX) {
-  const gd = document.getElementById(chartId);
-  if (!gd || !gd._fullLayout) return null;
-  const xaxis = gd._fullLayout.xaxis;
-  if (!xaxis || !xaxis._length) return null;
-  const bb = gd.getBoundingClientRect();
-  const pxInPlot = clientX - bb.left - xaxis._offset;
-  return {
-    pxToData: (px) => { const v = xaxis.p2d(px); return typeof v === "number" ? v : new Date(v).getTime(); },
-    pxInPlot,
-    range: xaxis.range.map(v => typeof v === "number" ? v : new Date(v).getTime()),
-  };
-}
-function _findChartUnderTouch(t0, t1) {
-  const midX = (t0.clientX + t1.clientX) / 2, midY = (t0.clientY + t1.clientY) / 2;
-  for (const id of _CHART_IDS) {
-    const el = document.getElementById(id);
-    if (!el) continue;
-    const bb = el.getBoundingClientRect();
-    if (midX >= bb.left && midX <= bb.right && midY >= bb.top && midY <= bb.bottom) return id;
-  }
-  return null;
-}
-function _isInsideChart(e) {
-  return _CHART_IDS.some(id => { const el = document.getElementById(id); return el && el.contains(e.target); });
-}
-let _pinchFrame = null;
-let _pinchLatest = null;
-function _applyPinch() {
-  _pinchFrame = null;
-  if (!_pinchLatest || !_pinchState.startRange) return;
-  const { t0, t1 } = _pinchLatest;
-  const dist = Math.hypot(t0.clientX - t1.clientX, t0.clientY - t1.clientY);
-  if (dist < 10 || _pinchState.startDist < 10) return;
-  const scale = _pinchState.startDist / dist;
-  const [r0, r1] = _pinchState.startRange;
-  const span = r1 - r0;
-  const newSpan = Math.max(span * scale, 86400000);
-  const leftFrac = (_pinchState.startMidData - r0) / span;
-  const newR0 = _pinchState.startMidData - leftFrac * newSpan;
-  Plotly.relayout(_pinchState.chartId, {
-    "xaxis.range[0]": new Date(newR0).toISOString(),
-    "xaxis.range[1]": new Date(newR0 + newSpan).toISOString(),
-    "xaxis.autorange": false,
-  });
-}
-document.addEventListener("touchstart", e => {
-  if (!_isInsideChart(e) || e.touches.length !== 2) return;
-  const t0 = e.touches[0], t1 = e.touches[1];
-  const chartId = _findChartUnderTouch(t0, t1);
-  if (!chartId) return;
-  const info = _getChartInfo(chartId, (t0.clientX + t1.clientX) / 2);
-  if (!info) return;
-  _pinchState.chartId = chartId;
-  _pinchState.startDist = Math.hypot(t0.clientX - t1.clientX, t0.clientY - t1.clientY);
-  _pinchState.startMidData = info.pxToData(info.pxInPlot);
-  _pinchState.startRange = info.range;
-  e.preventDefault();
-  e.stopPropagation();
-}, { passive: false, capture: true });
-document.addEventListener("touchmove", e => {
-  if (!_isInsideChart(e) || e.touches.length !== 2 || !_pinchState.startRange) return;
-  e.preventDefault();
-  e.stopPropagation();
-  _pinchLatest = { t0: e.touches[0], t1: e.touches[1] };
-  if (_pinchFrame == null) _pinchFrame = requestAnimationFrame(_applyPinch);
-}, { passive: false, capture: true });
-document.addEventListener("touchend", e => {
-  if (e.touches.length < 2) {
-    _pinchState.chartId = null; _pinchState.startRange = null; _pinchLatest = null;
-    if (_pinchFrame != null) { cancelAnimationFrame(_pinchFrame); _pinchFrame = null; }
-  }
-}, { capture: true });
 for (const id of _CHART_IDS) {
   const el = document.getElementById(id);
   if (!el) continue;
