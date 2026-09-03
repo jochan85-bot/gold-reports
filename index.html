@@ -446,88 +446,158 @@ function bindChartSync(ids) {
   }
 }
 
-// ─── 핀치줌 ─────────────────────────────────────────────────────────────────
-// Plotly의 scrollZoom은 'wheel' 이벤트(마우스/트랙패드)만 처리하고 실제 터치
-// 핀치는 지원하지 않는다 — Plotly 자체 드래그 레이어(dragElement)는 터치를
-// e.changedTouches[0] 하나만 읽는 단일 포인터로 취급해 두 손가락도 "한 손가락
-// 드래그"처럼 동작한다 (plotly.js 소스 확인). 그래서 차트 영역의 touchstart를
-// 캡처 단계에서 항상 stopPropagation 해 Plotly 자체 드래그가 아예 시작되지
-// 않게 막고(1손가락은 preventDefault 안 해서 페이지 세로 스크롤은 그대로 통과),
-// 2손가락 핀치만 우리가 직접 구현한다.
-const _pinchState = { chartId: null, startDist: 0, startMidData: 0, startRange: null };
+// ─── 터치 제스처 ────────────────────────────────────────────────────────────
+// Plotly의 scrollZoom은 'wheel' 이벤트(마우스/트랙패드)만 처리하고 터치 핀치는
+// 지원하지 않으며, Plotly 자체 드래그 레이어(dragElement)는 터치를
+// e.changedTouches[0] 하나만 읽는 단일 포인터로 취급하고 onMove가 방향 상관없이
+// 무조건 preventDefault를 걸어 세로 페이지 스크롤까지 막아버린다(plotly.js
+// 소스 확인). 그래서 차트 영역 터치는 전부 우리가 직접 구현한다:
+//   1손가락: 처음 8px 이동으로 가로/세로 방향 판정 → 가로면 차트 패닝(x축),
+//            세로면 그대로 두어 네이티브 페이지 스크롤에 맡김.
+//   2손가락: 핀치줌 — x축·y축(+y2축) 전부 동시에 확대/축소.
 const _CHART_IDS = ["priceChart", "ratioChartRecent", "priceChartFull", "ratioChartFull"];
-function _getChartInfo(chartId, clientX) {
-  const gd = document.getElementById(chartId);
-  if (!gd || !gd._fullLayout) return null;
-  const xaxis = gd._fullLayout.xaxis;
-  if (!xaxis || !xaxis._length) return null;
+
+function _axisInfo(gd, axisName, clientPos, isY) {
+  const ax = gd._fullLayout[axisName];
+  if (!ax || !ax._length) return null;
   const bb = gd.getBoundingClientRect();
-  const pxInPlot = clientX - bb.left - xaxis._offset;
-  return {
-    pxToData: (px) => { const v = xaxis.p2d(px); return typeof v === "number" ? v : new Date(v).getTime(); },
-    pxInPlot,
-    range: xaxis.range.map(v => typeof v === "number" ? v : new Date(v).getTime()),
-  };
+  const px = isY ? (clientPos - bb.top - ax._offset) : (clientPos - bb.left - ax._offset);
+  const toNum = v => (typeof v === "number") ? v : new Date(v).getTime();
+  return { range: ax.range.map(toNum), dataAtTouch: toNum(ax.p2d(px)), length: ax._length };
 }
-function _findChartUnderTouch(t0, t1) {
-  const midX = (t0.clientX + t1.clientX) / 2, midY = (t0.clientY + t1.clientY) / 2;
+function _findChartUnderPoint(clientX, clientY) {
   for (const id of _CHART_IDS) {
     const el = document.getElementById(id);
     if (!el) continue;
     const bb = el.getBoundingClientRect();
-    if (midX >= bb.left && midX <= bb.right && midY >= bb.top && midY <= bb.bottom) return id;
+    if (clientX >= bb.left && clientX <= bb.right && clientY >= bb.top && clientY <= bb.bottom) return id;
   }
   return null;
 }
 function _isInsideChart(e) {
   return _CHART_IDS.some(id => { const el = document.getElementById(id); return el && el.contains(e.target); });
 }
-let _pinchFrame = null;
-let _pinchLatest = null;
-function _applyPinch() {
-  _pinchFrame = null;
-  if (!_pinchLatest || !_pinchState.startRange) return;
-  const { t0, t1 } = _pinchLatest;
-  const dist = Math.hypot(t0.clientX - t1.clientX, t0.clientY - t1.clientY);
-  if (dist < 10 || _pinchState.startDist < 10) return;
-  const scale = _pinchState.startDist / dist;
-  const [r0, r1] = _pinchState.startRange;
-  const span = r1 - r0;
-  const newSpan = Math.max(span * scale, 86400000);
-  const leftFrac = (_pinchState.startMidData - r0) / span;
-  const newR0 = _pinchState.startMidData - leftFrac * newSpan;
-  Plotly.relayout(_pinchState.chartId, {
-    "xaxis.range[0]": new Date(newR0).toISOString(),
-    "xaxis.range[1]": new Date(newR0 + newSpan).toISOString(),
-    "xaxis.autorange": false,
-  });
+
+const _gesture = { mode: null, chartId: null };  // mode: 'undecided' | 'pan' | 'scroll' | 'pinch'
+let _gestureFrame = null;
+let _gestureTouches = null;
+
+function _applyGesture() {
+  _gestureFrame = null;
+  if (!_gesture.chartId || !_gestureTouches) return;
+  const gd = document.getElementById(_gesture.chartId);
+  if (!gd) return;
+
+  if (_gesture.mode === "pinch") {
+    const [t0, t1] = _gestureTouches;
+    const dist = Math.hypot(t0.clientX - t1.clientX, t0.clientY - t1.clientY);
+    if (dist < 10 || _gesture.startDist < 10) return;
+    const scale = _gesture.startDist / dist;
+    const patch = {};
+    for (const [key, axKey] of [["x", "xaxis"], ["y", "yaxis"], ["y2", "yaxis2"]]) {
+      const info = _gesture["start_" + key];
+      if (!info) continue;
+      const [r0, r1] = info.range;
+      const span = r1 - r0;
+      const newSpan = Math.max(span * scale, key === "x" ? 86400000 : Math.abs(span) * 0.02);
+      const frac = (info.dataAtTouch - r0) / span;
+      const newR0 = info.dataAtTouch - frac * newSpan;
+      const newR1 = newR0 + newSpan;
+      patch[axKey + ".range[0]"] = key === "x" ? new Date(newR0).toISOString() : newR0;
+      patch[axKey + ".range[1]"] = key === "x" ? new Date(newR1).toISOString() : newR1;
+      patch[axKey + ".autorange"] = false;
+    }
+    Plotly.relayout(_gesture.chartId, patch);
+  } else if (_gesture.mode === "pan") {
+    const t0 = _gestureTouches[0];
+    const info = _gesture.start_x;
+    if (!info) return;
+    const dx = t0.clientX - _gesture.startClientX;
+    const [r0, r1] = info.range;
+    const dataShift = -dx / (info.length / (r1 - r0));
+    Plotly.relayout(_gesture.chartId, {
+      "xaxis.range[0]": new Date(_gesture.panBaseR0 + dataShift).toISOString(),
+      "xaxis.range[1]": new Date(_gesture.panBaseR1 + dataShift).toISOString(),
+      "xaxis.autorange": false,
+    });
+  }
 }
+
 document.addEventListener("touchstart", e => {
   if (!_isInsideChart(e)) return;
   e.stopPropagation();  // Plotly 자체 dragElement.onStart가 아예 실행되지 않게 차단
-  if (e.touches.length !== 2) return;
-  const t0 = e.touches[0], t1 = e.touches[1];
-  const chartId = _findChartUnderTouch(t0, t1);
-  if (!chartId) return;
-  const info = _getChartInfo(chartId, (t0.clientX + t1.clientX) / 2);
-  if (!info) return;
-  _pinchState.chartId = chartId;
-  _pinchState.startDist = Math.hypot(t0.clientX - t1.clientX, t0.clientY - t1.clientY);
-  _pinchState.startMidData = info.pxToData(info.pxInPlot);
-  _pinchState.startRange = info.range;
-  e.preventDefault();
+  if (e.touches.length === 1) {
+    const t0 = e.touches[0];
+    const chartId = _findChartUnderPoint(t0.clientX, t0.clientY);
+    if (!chartId) return;
+    _gesture.mode = "undecided";
+    _gesture.chartId = chartId;
+    _gesture.startClientX = t0.clientX;
+    _gesture.startClientY = t0.clientY;
+  } else if (e.touches.length === 2) {
+    const t0 = e.touches[0], t1 = e.touches[1];
+    const midX = (t0.clientX + t1.clientX) / 2, midY = (t0.clientY + t1.clientY) / 2;
+    const chartId = _gesture.chartId || _findChartUnderPoint(midX, midY);
+    if (!chartId) return;
+    const gd = document.getElementById(chartId);
+    if (!gd || !gd._fullLayout) return;
+    _gesture.mode = "pinch";
+    _gesture.chartId = chartId;
+    _gesture.startDist = Math.hypot(t0.clientX - t1.clientX, t0.clientY - t1.clientY);
+    _gesture.start_x  = _axisInfo(gd, "xaxis", midX, false);
+    _gesture.start_y  = _axisInfo(gd, "yaxis", midY, true);
+    _gesture.start_y2 = gd._fullLayout.yaxis2 ? _axisInfo(gd, "yaxis2", midY, true) : null;
+    e.preventDefault();
+  }
 }, { passive: false, capture: true });
+
 document.addEventListener("touchmove", e => {
-  if (!_isInsideChart(e) || e.touches.length !== 2 || !_pinchState.startRange) return;
-  e.preventDefault();
-  e.stopPropagation();
-  _pinchLatest = { t0: e.touches[0], t1: e.touches[1] };
-  if (_pinchFrame == null) _pinchFrame = requestAnimationFrame(_applyPinch);
+  if (!_isInsideChart(e) || !_gesture.mode) return;
+
+  if (_gesture.mode === "pinch") {
+    if (e.touches.length !== 2) return;
+    e.preventDefault();
+    e.stopPropagation();
+    _gestureTouches = [e.touches[0], e.touches[1]];
+    if (_gestureFrame == null) _gestureFrame = requestAnimationFrame(_applyGesture);
+    return;
+  }
+
+  if (_gesture.mode === "undecided") {
+    const t0 = e.touches[0];
+    const dx = t0.clientX - _gesture.startClientX;
+    const dy = t0.clientY - _gesture.startClientY;
+    if (Math.hypot(dx, dy) < 8) return;  // 방향 판정 전 최소 이동거리
+    if (Math.abs(dx) <= Math.abs(dy)) { _gesture.mode = "scroll"; return; }
+    const gd = document.getElementById(_gesture.chartId);
+    if (!gd || !gd._fullLayout) { _gesture.mode = "scroll"; return; }
+    _gesture.mode = "pan";
+    _gesture.start_x = _axisInfo(gd, "xaxis", _gesture.startClientX, false);
+    if (!_gesture.start_x) { _gesture.mode = "scroll"; return; }
+    _gesture.panBaseR0 = _gesture.start_x.range[0];
+    _gesture.panBaseR1 = _gesture.start_x.range[1];
+  }
+
+  if (_gesture.mode === "pan") {
+    e.preventDefault();
+    e.stopPropagation();
+    _gestureTouches = [e.touches[0]];
+    if (_gestureFrame == null) _gestureFrame = requestAnimationFrame(_applyGesture);
+  }
+  // mode === 'scroll'이면 아무 것도 하지 않고 네이티브 페이지 스크롤에 맡김
 }, { passive: false, capture: true });
+
 document.addEventListener("touchend", e => {
-  if (e.touches.length < 2) {
-    _pinchState.chartId = null; _pinchState.startRange = null; _pinchLatest = null;
-    if (_pinchFrame != null) { cancelAnimationFrame(_pinchFrame); _pinchFrame = null; }
+  if (e.touches.length === 0) {
+    _gesture.mode = null; _gesture.chartId = null; _gestureTouches = null;
+    if (_gestureFrame != null) { cancelAnimationFrame(_gestureFrame); _gestureFrame = null; }
+  } else if (e.touches.length === 1 && _gesture.mode === "pinch") {
+    // 핀치 중 손가락 하나를 뗌 → 남은 손가락으로 패닝을 자연스럽게 이어감
+    const t0 = e.touches[0];
+    _gesture.mode = "undecided";
+    _gesture.startClientX = t0.clientX;
+    _gesture.startClientY = t0.clientY;
+    if (_gestureFrame != null) { cancelAnimationFrame(_gestureFrame); _gestureFrame = null; }
   }
 }, { capture: true });
 for (const id of _CHART_IDS) {
