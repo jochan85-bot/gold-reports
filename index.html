@@ -92,6 +92,7 @@
   footer { color: var(--muted); font-size: 12px; padding: 16px; text-align: center; }
   footer a { color: var(--blue); text-decoration: none; }
   .chart-note { font-size: 11px; color: var(--muted); margin-top: 4px; padding: 0 4px; }
+  .js-plotly-plot .nsewdrag { touch-action: pan-y !important; }
 </style>
 </head>
 <body>
@@ -178,7 +179,7 @@ const PLOTLY_LAYOUT_BASE = {
   margin: { l: 60, r: 60, t: 30, b: 50 },
   hovermode: "x unified",
   dragmode: "pan",
-  xaxis: { gridcolor: "#1f2a3a", zerolinecolor: "#1f2a3a" },
+  xaxis: { gridcolor: "#1f2a3a", zerolinecolor: "#1f2a3a", tickformat: "%Y.%m" },
   yaxis: { gridcolor: "#1f2a3a", zerolinecolor: "#1f2a3a" },
   legend: { orientation: "h", y: -0.15 },
 };
@@ -414,6 +415,108 @@ function renderDailyTable(rows) {
   el.innerHTML = html.join("");
 }
 
+// ─── 차트 x축 연동 ──────────────────────────────────────────────────────────
+function bindChartSync(ids) {
+  let _syncing = false;
+  function syncTo(targetId, eventData) {
+    if (_syncing) return;
+    _syncing = true;
+    try {
+      if (eventData["xaxis.autorange"] === true) {
+        Plotly.relayout(targetId, { "xaxis.autorange": true });
+      } else if (eventData["xaxis.range[0]"] !== undefined) {
+        Plotly.relayout(targetId, {
+          "xaxis.range[0]": eventData["xaxis.range[0]"],
+          "xaxis.range[1]": eventData["xaxis.range[1]"],
+          "xaxis.autorange": false,
+        });
+      } else if (Array.isArray(eventData["xaxis.range"])) {
+        Plotly.relayout(targetId, {
+          "xaxis.range": eventData["xaxis.range"],
+          "xaxis.autorange": false,
+        });
+      }
+    } finally {
+      setTimeout(() => { _syncing = false; }, 80);
+    }
+  }
+  for (const id of ids) {
+    const others = ids.filter(x => x !== id);
+    document.getElementById(id).on("plotly_relayout", e => others.forEach(t => syncTo(t, e)));
+  }
+}
+
+// ─── 핀치줌 ─────────────────────────────────────────────────────────────────
+const _pinchState = { chartId: null, startDist: 0, startMidData: 0, startRange: null };
+const _CHART_IDS = ["priceChart", "ratioChartRecent", "priceChartFull", "ratioChartFull"];
+function _getChartInfo(chartId, clientX) {
+  const gd = document.getElementById(chartId);
+  if (!gd || !gd._fullLayout) return null;
+  const xaxis = gd._fullLayout.xaxis;
+  if (!xaxis || !xaxis._length) return null;
+  const bb = gd.getBoundingClientRect();
+  const pxInPlot = clientX - bb.left - xaxis._offset;
+  return {
+    pxToData: (px) => { const v = xaxis.p2d(px); return typeof v === "number" ? v : new Date(v).getTime(); },
+    pxInPlot,
+    range: xaxis.range.map(v => typeof v === "number" ? v : new Date(v).getTime()),
+  };
+}
+function _findChartUnderTouch(t0, t1) {
+  const midX = (t0.clientX + t1.clientX) / 2, midY = (t0.clientY + t1.clientY) / 2;
+  for (const id of _CHART_IDS) {
+    const el = document.getElementById(id);
+    if (!el) continue;
+    const bb = el.getBoundingClientRect();
+    if (midX >= bb.left && midX <= bb.right && midY >= bb.top && midY <= bb.bottom) return id;
+  }
+  return null;
+}
+function _isInsideChart(e) {
+  return _CHART_IDS.some(id => { const el = document.getElementById(id); return el && el.contains(e.target); });
+}
+document.addEventListener("touchstart", e => {
+  if (!_isInsideChart(e) || e.touches.length !== 2) return;
+  const t0 = e.touches[0], t1 = e.touches[1];
+  const chartId = _findChartUnderTouch(t0, t1);
+  if (!chartId) return;
+  const info = _getChartInfo(chartId, (t0.clientX + t1.clientX) / 2);
+  if (!info) return;
+  _pinchState.chartId = chartId;
+  _pinchState.startDist = Math.hypot(t0.clientX - t1.clientX, t0.clientY - t1.clientY);
+  _pinchState.startMidData = info.pxToData(info.pxInPlot);
+  _pinchState.startRange = info.range;
+  e.preventDefault();
+}, { passive: false, capture: true });
+document.addEventListener("touchmove", e => {
+  if (!_isInsideChart(e) || e.touches.length !== 2 || !_pinchState.startRange) return;
+  const t0 = e.touches[0], t1 = e.touches[1];
+  const dist = Math.hypot(t0.clientX - t1.clientX, t0.clientY - t1.clientY);
+  if (dist < 10 || _pinchState.startDist < 10) return;
+  const scale = _pinchState.startDist / dist;
+  const [r0, r1] = _pinchState.startRange;
+  const span = r1 - r0;
+  const newSpan = Math.max(span * scale, 86400000);
+  const leftFrac = (_pinchState.startMidData - r0) / span;
+  const newR0 = _pinchState.startMidData - leftFrac * newSpan;
+  Plotly.relayout(_pinchState.chartId, {
+    "xaxis.range[0]": new Date(newR0).toISOString(),
+    "xaxis.range[1]": new Date(newR0 + newSpan).toISOString(),
+    "xaxis.autorange": false,
+  });
+  e.preventDefault();
+}, { passive: false, capture: true });
+document.addEventListener("touchend", e => {
+  if (e.touches.length < 2) { _pinchState.chartId = null; _pinchState.startRange = null; }
+}, { capture: true });
+for (const id of _CHART_IDS) {
+  const el = document.getElementById(id);
+  if (!el) continue;
+  el.addEventListener("gesturestart",  e => e.preventDefault(), { passive: false });
+  el.addEventListener("gesturechange", e => e.preventDefault(), { passive: false });
+  el.addEventListener("gestureend",    e => e.preventDefault(), { passive: false });
+}
+
 async function main() {
   let history = [];
   let signal = [];
@@ -433,12 +536,14 @@ async function main() {
     renderStatus(latest);
     renderPriceChart(history);
     renderRatioRecent(history);
+    bindChartSync(["priceChart", "ratioChartRecent"]);
     renderSignalLog(history);
     renderMonthSelect(history);
   }
 
   if (signal.length) {
     renderFullHistory(signal);
+    bindChartSync(["priceChartFull", "ratioChartFull"]);
   } else {
     document.getElementById("priceChartFull").innerHTML = '<div class="empty">v3_signal.json 없음</div>';
     document.getElementById("ratioChartFull").innerHTML = '';
