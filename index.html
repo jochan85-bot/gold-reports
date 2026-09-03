@@ -148,6 +148,23 @@
   </footer>
 
 <script>
+function buildZoneShapes(rows, isBuy, isSell) {
+  const shapes = [];
+  let curType = null, start = null, last = null;
+  rows.forEach(r => {
+    const t = isBuy(r) ? 'buy' : (isSell(r) ? 'sell' : null);
+    if (t !== curType) {
+      if (curType) shapes.push({ type:'rect', xref:'x', yref:'paper', x0:start, x1:last, y0:0, y1:1,
+        fillcolor: curType === 'buy' ? 'rgba(34,197,94,0.08)' : 'rgba(239,68,68,0.08)', line:{width:0} });
+      curType = t; start = r.date;
+    }
+    last = r.date;
+  });
+  if (curType) shapes.push({ type:'rect', xref:'x', yref:'paper', x0:start, x1:last, y0:0, y1:1,
+    fillcolor: curType === 'buy' ? 'rgba(34,197,94,0.08)' : 'rgba(239,68,68,0.08)', line:{width:0} });
+  return shapes;
+}
+
 const STATE_COLOR = { '매수': '#22c55e', '매도': '#ef4444', '관망': '#8b97a7', '매수 구간': '#22c55e' };
 const STATE_LABEL = { '매수': '🟢 매수',   '매도': '🔴 매도',   '관망': '⚪ 관망', '매수 구간': '🟢 매수 구간' };
 const STATE_KEY   = { '매수': 'buy',       '매도': 'sell',      '관망': 'hold',   '매수 구간': 'buy' };
@@ -226,20 +243,9 @@ function renderPriceChart(rows) {
       hovertemplate: "%{x}<br>매도 · $%{y:,.0f}<extra></extra>",
     },
   ];
-  // 매수 에피소드 창 음영 (발화일~종료일)
-  const epShapes = [];
-  let epStart = null, epLast = null;
-  rows.forEach(r => {
-    const on = dispState(r) === '매수 구간' || r.state === '매수';
-    if (on) { if (!epStart) epStart = r.date; epLast = r.date; }
-    else if (epStart) {
-      epShapes.push({ type: 'rect', xref: 'x', yref: 'paper', x0: epStart, x1: epLast,
-        y0: 0, y1: 1, fillcolor: 'rgba(34,197,94,0.08)', line: { width: 0 } });
-      epStart = null;
-    }
-  });
-  if (epStart) epShapes.push({ type: 'rect', xref: 'x', yref: 'paper', x0: epStart, x1: epLast,
-    y0: 0, y1: 1, fillcolor: 'rgba(34,197,94,0.08)', line: { width: 0 } });
+  const epShapes = buildZoneShapes(rows,
+    r => dispState(r) === '매수 구간' || r.state === '매수',
+    r => r.state === '매도');
 
   const layout = Object.assign({}, PLOTLY_LAYOUT_BASE, {
     yaxis: Object.assign({}, PLOTLY_LAYOUT_BASE.yaxis, { title: "USD" }),
@@ -261,6 +267,9 @@ function renderRatioRecent(rows) {
     { type:"line", xref:"paper", x0:0, x1:1, yref:"y", y0:-5, y1:-5, line:{ color:"#4ade80", width:1, dash:"dash" } },
     { type:"line", xref:"paper", x0:0, x1:1, yref:"y", y0:20, y1:20, line:{ color:"#ef4444", width:1, dash:"dash" } },
     { type:"line", xref:"paper", x0:0, x1:1, yref:"y", y0:0,  y1:0,  line:{ color:"#8b97a7", width:0.6, dash:"dot" } },
+    ...buildZoneShapes(rows,
+      r => dispState(r) === '매수 구간' || r.state === '매수',
+      r => r.state === '매도'),
   ];
   const layout = Object.assign({}, PLOTLY_LAYOUT_BASE, {
     yaxis:  Object.assign({}, PLOTLY_LAYOUT_BASE.yaxis, { title: "rGold %", ticksuffix: "%" }),
@@ -294,9 +303,11 @@ function renderFullHistory(sig) {
       marker: { symbol: "triangle-down", size: 12, color: "#ef4444", line: { color: "#0b0f17", width: 1 } },
     },
   ];
+  const fullZoneShapes = buildZoneShapes(sig, r => r.buy === true, r => r.sell === true);
   const priceLayout = Object.assign({}, PLOTLY_LAYOUT_BASE, {
     yaxis: Object.assign({}, PLOTLY_LAYOUT_BASE.yaxis, { title: "USD" }),
     margin: { l: 60, r: 60, t: 20, b: 30 },
+    shapes: fullZoneShapes,
   });
   Plotly.newPlot("priceChartFull", priceTraces, priceLayout, PLOTLY_CONFIG);
 
@@ -307,6 +318,7 @@ function renderFullHistory(sig) {
     { type:"line", xref:"paper", x0:0, x1:1, yref:"y", y0:-5, y1:-5, line:{ color:"#4ade80", width:1, dash:"dash" } },
     { type:"line", xref:"paper", x0:0, x1:1, yref:"y", y0:20, y1:20, line:{ color:"#ef4444", width:1, dash:"dash" } },
     { type:"line", xref:"paper", x0:0, x1:1, yref:"y", y0:0,  y1:0,  line:{ color:"#8b97a7", width:0.6, dash:"dot" } },
+    ...fullZoneShapes,
   ];
   const ratioLayout = Object.assign({}, PLOTLY_LAYOUT_BASE, {
     yaxis: Object.assign({}, PLOTLY_LAYOUT_BASE.yaxis, { title: "rGold %", ticksuffix: "%" }),
