@@ -157,9 +157,9 @@ function buildZoneShapes(rows, isBuy, isSell) {
     if (t !== curType) {
       if (curType) shapes.push({ type:'rect', xref:'x', yref:'paper', x0:start, x1:last, y0:0, y1:1,
         fillcolor: curType === 'buy' ? 'rgba(34,197,94,0.08)' : 'rgba(239,68,68,0.08)', line:{width:0} });
-      curType = t; start = r.date;
+      curType = t; start = r.exec_date || r.date;
     }
-    last = r.date;
+    last = r.exec_date || r.date;
   });
   if (curType) shapes.push({ type:'rect', xref:'x', yref:'paper', x0:start, x1:last, y0:0, y1:1,
     fillcolor: curType === 'buy' ? 'rgba(34,197,94,0.08)' : 'rgba(239,68,68,0.08)', line:{width:0} });
@@ -212,7 +212,7 @@ function renderStatus(latest) {
     <span>200일선 <strong style="color:${rgColor}">${fmtPct(rg)}</strong></span>
     <span>RSI <strong>${rsi != null ? rsi.toFixed(0) : '-'}</strong></span>
     ${bullTag} ${changedTag}
-    <span class="muted">· ${latest.date || ''}</span>
+    <span class="muted">· ${latest.exec_date || latest.date || ''}</span>
   `;
 }
 
@@ -223,7 +223,7 @@ function buildMarkers(rows) {
 }
 
 function renderPriceChart(rows) {
-  const x    = rows.map(r => r.date);
+  const x    = rows.map(r => r.exec_date || r.date);
   const px   = rows.map(r => r.px_usd);
   const ma   = rows.map(r => r.ma200);
   const ma20 = rows.map(r => r.ma20);
@@ -233,12 +233,12 @@ function renderPriceChart(rows) {
     { x, y: px, name: "XAU/USD", line: { color: "#eab308", width: 2 }, mode: "lines" },
     { x, y: ma, name: "200일선", line: { color: "#8b97a7", width: 1, dash: "dot" }, mode: "lines" },
     { x, y: ma20, name: "20일선", line: { color: "#38bdf8", width: 1, dash: "dash" }, mode: "lines" },
-    { x: buys.map(r => r.date), y: buys.map(r => r.px_usd),
+    { x: buys.map(r => r.exec_date || r.date), y: buys.map(r => r.px_usd),
       name: "매수", mode: "markers",
       marker: { symbol: "triangle-up", size: 12, color: "#22c55e", line: { color: "#0b0f17", width: 1 } },
       hovertemplate: "%{x}<br>매수 · $%{y:,.0f}<extra></extra>",
     },
-    { x: sells.map(r => r.date), y: sells.map(r => r.px_usd),
+    { x: sells.map(r => r.exec_date || r.date), y: sells.map(r => r.px_usd),
       name: "매도", mode: "markers",
       marker: { symbol: "triangle-down", size: 12, color: "#ef4444", line: { color: "#0b0f17", width: 1 } },
       hovertemplate: "%{x}<br>매도 · $%{y:,.0f}<extra></extra>",
@@ -256,7 +256,7 @@ function renderPriceChart(rows) {
 }
 
 function renderRatioRecent(rows) {
-  const x   = rows.map(r => r.date);
+  const x   = rows.map(r => r.exec_date || r.date);
   const rg  = rows.map(r => r.rgold != null ? (r.rgold - 1) * 100 : null);
   const rsi = rows.map(r => r.rsi);
 
@@ -349,7 +349,7 @@ function renderSignalLog(rows) {
     const key = STATE_KEY[r.state] || 'hold';
     const rg = r.rgold != null ? (r.rgold - 1) * 100 : null;
     html.push(`<tr>
-      <td>${r.date}</td>
+      <td>${r.exec_date || r.date}</td>
       <td class="state-cell state-${key}">${STATE_LABEL[r.state] || r.state}</td>
       <td class="right">${fmtUSD(r.px_usd)}</td>
       <td class="right">${fmtPct(rg)}</td>
@@ -367,7 +367,7 @@ function monthKey(dateStr) { return (dateStr || '').slice(0, 7); }
 function groupByMonth(rows) {
   const map = new Map();
   rows.forEach(r => {
-    const k = monthKey(r.date);
+    const k = monthKey(r.exec_date || r.date);
     if (!map.has(k)) map.set(k, []);
     map.get(k).push(r);
   });
@@ -402,7 +402,7 @@ function renderDailyTable(rows) {
     const rg = r.rgold != null ? (r.rgold - 1) * 100 : null;
     const divTag = r.bull_div ? '<span style="color:#22c55e">▲</span>' : '';
     html.push(`<tr>
-      <td>${r.date}</td>
+      <td>${r.exec_date || r.date}</td>
       <td class="state-cell state-${key}">${ds}</td>
       <td class="right">${fmtUSD(r.px_usd)}</td>
       <td class="right">${fmtUSD(r.ma200)}</td>
