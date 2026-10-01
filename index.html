@@ -207,12 +207,12 @@ function renderStatus(latest) {
     : `<span class="muted">📅 ${latest.state_since || '-'} 부터 (${latest.state_days || 1}일째)</span>`;
 
   el.innerHTML = `
+    <span class="muted">${latest.exec_date || latest.date || ''}</span>
     <span class="pill state-${key}">${label}</span>
     <span>XAU/USD <strong>${fmtUSD(latest.px_usd)}</strong></span>
     <span>200일선 <strong style="color:${rgColor}">${fmtPct(rg)}</strong></span>
     <span>RSI <strong>${rsi != null ? rsi.toFixed(0) : '-'}</strong></span>
     ${bullTag} ${changedTag}
-    <span class="muted">· ${latest.exec_date || latest.date || ''}</span>
   `;
 }
 
