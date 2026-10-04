@@ -3796,5 +3796,29 @@
     "exec_date": "2026-10-04",
     "display_state": "관망",
     "buy_episode": null
+  },
+  {
+    "date": "2026-10-02",
+    "timestamp": "2026-10-05 08:30:01 KST",
+    "px_usd": 4162.3,
+    "ma200": 4553.3655,
+    "ma20": 4334.33,
+    "rgold": 0.9141,
+    "rsi": 34.1352,
+    "state": "매수",
+    "bull_div": true,
+    "buy": true,
+    "sell": false,
+    "state_since": "2026-10-05",
+    "state_days": 1,
+    "state_changed": true,
+    "kimchi_premium_pct": 1.705,
+    "retro_alerts": [],
+    "stale_lag_trading_days": 0,
+    "stale_lag_calendar_days": 3,
+    "data_stale_hold": false,
+    "exec_date": "2026-10-05",
+    "display_state": "매수",
+    "buy_episode": null
   }
 ]
