@@ -48169,14 +48169,26 @@
   },
   {
     "date": "2026-10-05",
-    "px_usd": 4166.4,
-    "ma200": 4552.54,
-    "ma20": 4318.82,
-    "rgold": 0.9152,
-    "rsi": 34.65,
-    "state": "매수",
-    "bull_div": true,
-    "buy": true,
+    "px_usd": 4156.8,
+    "ma200": 4552.49,
+    "ma20": 4318.34,
+    "rgold": 0.9131,
+    "rsi": 33.78,
+    "state": "관망",
+    "bull_div": false,
+    "buy": false,
+    "sell": false
+  },
+  {
+    "date": "2026-10-06",
+    "px_usd": 4193.8,
+    "ma200": 4551.59,
+    "ma20": 4306.08,
+    "rgold": 0.9214,
+    "rsi": 38.42,
+    "state": "관망",
+    "bull_div": false,
+    "buy": false,
     "sell": false
   }
 ]
