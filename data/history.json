@@ -4270,5 +4270,32 @@
       "fired": "2026-10-14",
       "day": 8
     }
+  },
+  {
+    "date": "2026-10-21",
+    "timestamp": "2026-10-23 08:30:01 KST",
+    "px_usd": 4150.0,
+    "ma200": 4537.35,
+    "ma20": 4182.81,
+    "rgold": 0.9146,
+    "rsi": 41.1653,
+    "state": "관망",
+    "bull_div": false,
+    "buy": false,
+    "sell": false,
+    "state_since": "2026-10-17",
+    "state_days": 7,
+    "state_changed": false,
+    "kimchi_premium_pct": -1.427,
+    "retro_alerts": [],
+    "stale_lag_trading_days": 1,
+    "stale_lag_calendar_days": 2,
+    "data_stale_hold": false,
+    "exec_date": "2026-10-23",
+    "display_state": "매수 구간",
+    "buy_episode": {
+      "fired": "2026-10-14",
+      "day": 9
+    }
   }
 ]
