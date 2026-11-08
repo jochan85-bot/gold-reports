@@ -48466,5 +48466,17 @@
     "bull_div": false,
     "buy": false,
     "sell": false
+  },
+  {
+    "date": "2026-11-08",
+    "px_usd": 4078.6,
+    "ma200": 4496.99,
+    "ma20": 4075.11,
+    "rgold": 0.907,
+    "rsi": 47.48,
+    "state": "관망",
+    "bull_div": false,
+    "buy": false,
+    "sell": false
   }
 ]
