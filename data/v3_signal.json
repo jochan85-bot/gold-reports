@@ -48526,5 +48526,17 @@
     "bull_div": true,
     "buy": true,
     "sell": false
+  },
+  {
+    "date": "2026-11-15",
+    "px_usd": 3881.7,
+    "ma200": 4467.93,
+    "ma20": 4021.28,
+    "rgold": 0.8688,
+    "rsi": 35.68,
+    "state": "매수",
+    "bull_div": true,
+    "buy": true,
+    "sell": false
   }
 ]
